@@ -5,9 +5,11 @@ from rango.models import Page
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
+    page_list = Page.objects.order_by('-views')[:5]
     context_dict = {}
     context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
     context_dict['categories'] = category_list
+    context_dict['pages'] = page_list
     return render(request, 'rango/index.html', context=context_dict)
     #return HttpResponse("Rango says hey there partner!<a href='/rango/about/'>About</a>")
 
@@ -15,3 +17,21 @@ def about(request):
     context_dict={'boldmessage': 'This tutorial has been put together by Daniel'}
     return render(request, 'rango/about.html', context=context_dict)
     #return HttpResponse("Rango says here is the about page.<a href='/rango/'>Index</a>")
+
+def show_category(request, category_name_slug):
+# Create a context dictionary which we can pass to the template rendering engine.
+    context_dict = {}
+    try:
+# The .get() method returns one model instance or raises an DoesNotExist exception.
+        category = Category.objects.get(slug=category_name_slug)
+# Retrieve all page; filter() will return a list of page objects/ empty list.
+        pages = Page.objects.filter(category=category)
+# Adds our results list to the template context under name pages.
+        context_dict['pages'] = pages
+# We also add the category object from the database to the context dictionary.
+# We'll use this in the template to verify that the category exists.
+        context_dict['category'] = category
+    except Category.DoesNotExist:
+        context_dict['category'] = None
+        context_dict['pages'] = None
+    return render(request, 'rango/category.html', context=context_dict)
