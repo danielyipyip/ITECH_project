@@ -6,6 +6,7 @@ from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
@@ -129,3 +130,7 @@ def user_login(request):
             return HttpResponse("Invalid login details supplied.")
     else:# request not HTTP POST -> display login form (most likely be a HTTP GET.)
         return render(request, 'rango/login.html') #blank dictionary object
+
+@login_required
+def restricted(request):
+    return HttpResponse("Since you're logged in, you can see this text!")
