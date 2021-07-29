@@ -5,6 +5,7 @@ from rango.models import Page
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.contrib.auth import authenticate, login
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
@@ -107,3 +108,24 @@ def register(request):
     return render(request, 'rango/register.html', context={'user_form': user_form, 
         'profile_form': profile_form, 'registered': registered})
     
+def user_login(request):
+    if request.method == 'POST':
+# use request.POST.get('<variable>') as opposed to request.POST['<variable>'], 
+# request.POST.get('<variable>') returns None , while request.POST['<variable>'] raise a KeyError exception.
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+# Use Django's machinery to see if the username/password combination is valid - a User object is returned if it is.
+        user = authenticate(username=username, password=password)
+# If we have a User object, the details are correct, otherwise None (Python's way of representing the absence of a value)
+        if user:
+            if user.is_active:
+# if account valid and active, log the user in, send user back to the homepage.
+                login(request, user)
+                return redirect(reverse('rango:index'))
+            else:
+                return HttpResponse("Your Rango account is disabled.")
+        else: # Bad login details, can't log the user in.
+            print(f"Invalid login details: {username}, {password}")
+            return HttpResponse("Invalid login details supplied.")
+    else:# request not HTTP POST -> display login form (most likely be a HTTP GET.)
+        return render(request, 'rango/login.html') #blank dictionary object
