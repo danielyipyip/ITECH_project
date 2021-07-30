@@ -1,11 +1,12 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+# from django.http import HttpResponse
 from rango.models import Category
 from rango.models import Page
-from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
+from rango.forms import CategoryForm, PageForm
+# from rango.forms import UserForm, UserProfileForm
 from django.shortcuts import redirect
 from django.urls import reverse
-from django.contrib.auth import authenticate, login, logout
+# from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 
@@ -90,63 +91,63 @@ def add_page(request,category_name_slug):
     context_dict = {'form': form, 'category': category}
     return render(request, 'rango/add_page.html', context=context_dict)
 
-def register(request):
-    registered = False
-    if request.method == 'POST':
-        user_form = UserForm(request.POST)
-        profile_form = UserProfileForm(request.POST)
+# def register(request):
+#     registered = False
+#     if request.method == 'POST':
+#         user_form = UserForm(request.POST)
+#         profile_form = UserProfileForm(request.POST)
 
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save() #will this leak pw??
-            user.set_password(user.password) #hash pw
-            user.save()
+#         if user_form.is_valid() and profile_form.is_valid():
+#             user = user_form.save() #will this leak pw??
+#             user.set_password(user.password) #hash pw
+#             user.save()
 
-            profile = profile_form.save(commit=False) #delay save, no user yet
-            profile.user = user
-            if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture'] #if uploaded pic, add
-            profile.save()
-            registered=True
-        else:
-            print(user_form.errors, profile_form.errors)
-    else: #NOT HTTP POST-> render 2 model form instance (empty form)
-        #so 1st start is get-> will generate empty form??
-        user_form=UserForm()
-        profile_form=UserProfileForm()
+#             profile = profile_form.save(commit=False) #delay save, no user yet
+#             profile.user = user
+#             if 'picture' in request.FILES:
+#                 profile.picture = request.FILES['picture'] #if uploaded pic, add
+#             profile.save()
+#             registered=True
+#         else:
+#             print(user_form.errors, profile_form.errors)
+#     else: #NOT HTTP POST-> render 2 model form instance (empty form)
+#         #so 1st start is get-> will generate empty form??
+#         user_form=UserForm()
+#         profile_form=UserProfileForm()
 
-    return render(request, 'rango/register.html', context={'user_form': user_form, 
-        'profile_form': profile_form, 'registered': registered})
+#     return render(request, 'rango/register.html', context={'user_form': user_form, 
+#         'profile_form': profile_form, 'registered': registered})
     
-def user_login(request):
-    if request.method == 'POST':
-# use request.POST.get('<variable>') as opposed to request.POST['<variable>'], 
-# request.POST.get('<variable>') returns None , while request.POST['<variable>'] raise a KeyError exception.
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-# Use Django's machinery to see if the username/password combination is valid - a User object is returned if it is.
-        user = authenticate(username=username, password=password)
-# If we have a User object, the details are correct, otherwise None (Python's way of representing the absence of a value)
-        if user:
-            if user.is_active:
-# if account valid and active, log the user in, send user back to the homepage.
-                login(request, user)
-                return redirect(reverse('rango:index'))
-            else:
-                return HttpResponse("Your Rango account is disabled.")
-        else: # Bad login details, can't log the user in.
-            print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
-    else:# request not HTTP POST -> display login form (most likely be a HTTP GET.)
-        return render(request, 'rango/login.html') #blank dictionary object
+# def user_login(request):
+#     if request.method == 'POST':
+# # use request.POST.get('<variable>') as opposed to request.POST['<variable>'], 
+# # request.POST.get('<variable>') returns None , while request.POST['<variable>'] raise a KeyError exception.
+#         username = request.POST.get('username')
+#         password = request.POST.get('password')
+# # Use Django's machinery to see if the username/password combination is valid - a User object is returned if it is.
+#         user = authenticate(username=username, password=password)
+# # If we have a User object, the details are correct, otherwise None (Python's way of representing the absence of a value)
+#         if user:
+#             if user.is_active:
+# # if account valid and active, log the user in, send user back to the homepage.
+#                 login(request, user)
+#                 return redirect(reverse('rango:index'))
+#             else:
+#                 return HttpResponse("Your Rango account is disabled.")
+#         else: # Bad login details, can't log the user in.
+#             print(f"Invalid login details: {username}, {password}")
+#             return HttpResponse("Invalid login details supplied.")
+#     else:# request not HTTP POST -> display login form (most likely be a HTTP GET.)
+#         return render(request, 'rango/login.html') #blank dictionary object
 
 @login_required
 def restricted(request):
     return render(request, 'rango/restricted.html')
 
-@login_required #only loged in can log out
-def user_logout(request):
-    logout(request)
-    return redirect(reverse('rango:index')) #return to home page
+# @login_required #only loged in can log out
+# def user_logout(request):
+#     logout(request)
+#     return redirect(reverse('rango:index')) #return to home page
 
 #helper method: 
 def get_server_side_cookie(request, cookie, default_val=None):
