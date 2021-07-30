@@ -6,13 +6,17 @@
 {% endblock %}
 
 {% block body_block %}
-    <h1>Rango says...</h1>
+<div class="jumbotron p-3">
+    <div class="container">
+        <h1 class="jumbotron-heading">Rango says...</h1>
+        <div>
+            <strong>{{ boldmessage }}</strong><br />
+        </div>
+    </div>
+</div>
     <div>
         here is the about page. <br />
         <p>Visits: {{ visits }}</p>
-    <strong>{{ boldmessage }}</strong><br />
-    </div>
-    <div>
         <img src="{% static 'images/rango.jpg' %}"
             alt="Picture of Rango" /> <!-- New line -->
         <img src="{{MEDIA_URL}}cat.jpg"
