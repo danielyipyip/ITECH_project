@@ -16,10 +16,15 @@ class PageForm(forms.ModelForm):
     title = forms.CharField(max_length=Page.TITLE_MAX_LENGTH, help_text="Please enter the title of the page.")
     url = forms.URLField(max_length=200, help_text="Please enter the URL of the page.")
     views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
+    likes = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
+    tag = forms.CharField(widget=forms.HiddenInput(), initial="none")
+    description = forms.CharField(widget=forms.Textarea, max_length=200, help_text="Please give a Description.")
+    image = forms.ImageField(help_text="Upload a photo to help describing the page. (optional)", required=False)
 
     class Meta:
-            model = Page
-            exclude = ('category',)
+        model = Page
+        #exclude = ('category', 'likes', 'tag')
+        fields = ('title', 'url', 'description', 'image',)
     
     def clean(self):
         cleaned_data = self.cleaned_data

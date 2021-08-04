@@ -1,0 +1,63 @@
+{% extends 'rango/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    {{ page.title }}
+{% endblock %}
+
+{% block cssblock %}
+    <style>
+    #container {
+        display: flex;
+    }
+    
+    .container__half {
+        flex: 1;
+    }
+    </style>
+{% endblock %}
+
+{% block body_block %}
+    {% if page %}
+        <h1>{{ page.title }}</h1>
+        <div id="container">
+            <div class="container__half">
+            <div>
+                <p><a href="{{ page.url }}">Link to the website</a></p>
+            </div>
+
+            <div>
+                <p id="test">
+                {% if page.description != "none" %}
+                    Description: {{ page.description }}
+                {% else %}
+                    No description.
+                {% endif %}
+                </p>
+            </div>
+
+            <div>
+                <p> 
+                    Category: {{ page.category }} 
+                </p>
+            </div>
+
+            <div>
+                <p>
+                    Views: {{ page.views }}
+                </p>
+            </div>
+
+            <img src="{{MEDIA_URL}}{{page.image}}" alt="{{page.title}}" />
+
+            </div>
+
+            <!-- Right content -->
+            <div class="container__half">
+                Comment
+            </div>
+        </div>
+    {% else %}
+        The specified page does not exist.
+    {% endif %}
+{% endblock %}
