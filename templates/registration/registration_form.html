@@ -1,45 +1,90 @@
 {% extends 'rango/base.html' %}
 
 {% block title_block %}
-Register
+Create your Account
 {% endblock %}
 
 {% block body_block %}
-<div class="jumbotron p-4">
-    <div class="container">
-        <h1>Register Here</h1>
+<script type="text/javascript">  
+    var passwordvalidate = function() {
+      if (document.getElementById('id_password1').value == document.getElementById('id_password2').value) {
+             document.getElementById('validationmessage').style.color = 'green';
+             document.getElementById('validationmessage').innerHTML = 'Password Matched';
+     } else {
+             document.getElementById('validationmessage').style.color = 'red';
+             document.getElementById('validationmessage').innerHTML = 'Password not match';
+             }
+     }
+
+     
+ </script>
+
+    <div class="container pt-5">
+        <h class = "display-4 text-danger";>Create Your Account</h> 
     </div>
-</div>
+
+    <div class="container pt-5">
+        <h3>Your Account Details</h3>
+        <h5>Compulsory Field</h5>
+    </div>
+
 <div class="container">
-    <div class="row">
         <div class="form-group">
             <form role="form" method="post" action=".">
                 {% csrf_token %}
-                <div class="form-group">
-                    <p class="required">
-                        <label class="required" for="id_username">Username:</label>
-                        <input class="form-control" id="id_username" maxlength="30" name="username" type="text" />
+                <div class="col-md-5">
+                        <label for="id_username">Username:</label>
+                        <input class="form-control" id="id_username" maxlength="20" name="username" type="text" placeholder="required" required />
                         <span class="helptext">
-                            Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only.
+                         20 characters or fewer. Letters, digits and @/./+/-/_ only.
                         </span>
-                    </p>
-                    <p class="required">
-                        <label class="required" for="id_email">E-mail:</label>
-                        <input class="form-control" id="id_email" name="email" type="email" />
-                    </p>
-                    <p class="required">
-                        <label class="required" for="id_password1">Password:</label>
-                        <input class="form-control" id="id_password1" name="password1" type="password" />
-                    </p>
-                    <p class="required">
-                        <label class="required" for="id_password2">Password confirmation:</label>
-                        <input class="form-control" id="id_password2" name="password2" type="password" />
-                        <span class="helptext">
-                            Enter the same password as before, for verification.
-                        </span>
-                    </p>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                    
+                    <div>
+                        <label for="id_email">E-mail:</label>
+                        <input class="form-control" id="id_email" name="email" type="email" placeholder="required" required/>
+                    </div>
+                    <div>
+                        <label for="id_password1">Password:</label>
+                        <input class="form-control" id="id_password1" name="password1" type="password" onkeyup='passwordvalidate();' placeholder="required" required/>
+                    </div>
+                    <div>
+                        <label for="id_password2">Password confirmation:</label>
+                        <input class="form-control" id="id_password2" name="password2" type="password" onkeyup='passwordvalidate();' placeholder="required" required/>
+                        <span id='validationmessage'></span> 
+                    </div>
+                    <div class="pt-4">
+                        <h3>Your Profile Details</h3>
+                        <h5>Optional Field</h5>
+                    </div>
+                    <div>
+                        <label for="id_first_name">First Name:</label>
+                        <input class="form-control" id="id_first_name" name="firstname" type="text"/> 
+                    </div>
+
+                    <div>
+                        <label for="id_last_name">Last Name:</label>
+                        <input class="form-control" id="id_last_name" name="lastname" type="text"/>
+                    </div>
+
+                    <!--<div class="form-group">
+                        <label for="level_expertise">Level of Expertise (Select one)</label>
+                        <select class="form-control id="level_expertise">
+                            <option value="beginner">Beginner</option>
+                            <option value="junior">Junior Developer</option>
+                            <option value="senior">Senior Developer</option>
+                            <option value="professional">Professional</option>
+                        </select>
+                    </div>-->
+                <div class="row">  
+                    <div class="pt-5 col-sm-12 col-md-12 col-xs-12">  
+                        <div class="float-right">
+                            <button class="btn btn-primary" type="submit">Register</button>
+                        </form> 
+                            <a href="{% url 'rango:index' %}" class="btn btn-danger" role="button">Cancel</a>
+                        </div>  
+                </div>  
+                
+
             </form>
         </div>
     </div>
