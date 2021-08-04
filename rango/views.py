@@ -17,6 +17,7 @@ def index(request):
     context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
     context_dict['categories'] = category_list
     context_dict['pages'] = page_list
+    context_dict['special_pages'] = Page.objects.order_by('-views')[6]
 
     visitor_cookie_handler(request)
     # Obtain our Response object early so we can add cookie information.

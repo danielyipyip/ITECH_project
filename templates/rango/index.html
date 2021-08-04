@@ -1,4 +1,4 @@
-{% extends 'rango/base.html' %}
+{% extends 'rango/base_trying.html' %}
 {% load staticfiles %}
 
 {% block title_block %}
@@ -6,34 +6,58 @@ Homepage
 {% endblock %}
 
 {% block body_block %}
-<div class="jumbotron p-4">
+
+<div class="jumbotron p-4 text-white bg-dark">
     <div class="container">
-        <h1 class="jumbotron-heading">Rango says...</h1>
+        <h1 class="jumbotron-heading">Learn dyango from today</h1>
         <div>
-            <h2 class="h2">
-                {% if user.is_authenticated %}
-                howdy {{ user.username }}!
-                {% else %}
-                hey there partner!
-                {% endif %}
-            </h2>
-            <strong>{{ boldmessage }}</strong>
+            <secondary>Enjoy yourself !</secondary>
         </div>
     </div>
 </div>
 
 
 <div class="container">
-    <div class="row">
+    <div class="row row-eq-height">
         <div class="col-md-6">
-            <div class="card mb-6">
+            <div class="card h-100 mb-4">
+                <div class="card-body">
+                    <h3 class="text-center mb-0">This month's special</h3>
+                    <div class='card-text mb-auto'>
+                        <br />
+                        <p class='class-text mb-auto'>
+                            Introduction of a page is going to be add here
+                        </p>
+                        <!--special pages is set to be view number =6's page for now-->
+                        <a class='text-center' href={{special_pages.url}}>Go to the page</a>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100 mb-4 ">
+                <div class="card-body">
+                    <h5 class="text-center">About us</h5>
+                    <p class='class-text mb-auto'>
+                        This is a group project...
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row row-eq-height">
+        <div class="col-md-6">
+            <div class="card h-100 mb-6">
                 <div class="card-body">
                     <h2>Most Liked Categories</h2>
                     <p class="card-text">
                         {% if categories %}
                     <ul class="list-group">
                         {% for category in categories %}
-                        <li class="list-group-item"> 
+                        <li class="list-group-item">
                             <a href="{% url 'rango:show_category' category.slug %}">
                                 {{ category.name }}</a>
                         </li>
@@ -47,15 +71,16 @@ Homepage
             </div>
         </div>
         <div class="col-md-6">
-            <div class="card mb-6">
+            <div class="card h-100 mb-6">
                 <div class="card-body">
                     <h2>Most Viewed Pages</h2>
                     <p class="card-text">
                         {% if pages %}
-                    <ul>
+                    <ul class="list-group">
                         {% for page in pages %}
-                        <li>
+                        <li class="list-group-item">
                             <a href="{{ page.url }}">{{ page.title }}</a>
+                            <span><small>(Views = {{page.views}})</small></span>
                         </li>
                         {% endfor %}
                     </ul>
