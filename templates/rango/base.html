@@ -4,26 +4,38 @@
 <html lang="en">
     <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Jekyll v3.8.5">
-    <link rel="icon" href="{% static 'images/favicon.ico' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="ITech project">
+    <meta name="author" content="group caffine">
+    <!--
+        <meta name="generator" content="Jekyll v3.8.5">
+    -->
+    <link rel="icon" href="{% static 'images/rango.jpg' %}">
     <title>
-        Rango - {% block title_block %}How to Tango with Django!{% endblock %}
+        Rango - {% block title_block %}Enhanced Rango{% endblock %}
     </title>
     {% block cssblock %} {% endblock %}
     <!-- Bootstrap core CSS -->
     <link href="https://getbootstrap.com/docs/4.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     
     <!-- Custom styles for this template -->
-    <link href="https://getbootstrap.com/docs/4.2/examples/dashboard/dashboard.css" rel="stylesheet">
+    <link href="{% static 'rango_css/base_style.css' %}" rel="stylesheet">
+    <!-- 
+    <link href="/templates/rango/base_style.css" rel="stylesheet">
+    -->
     </head>
     
     <body>
+        <!-- top navigation bar: change to banner-->
         <header>
+            <div class='banner'>
+
+            </div>
+
+
             <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark p-0">
                 <a class="navbar-brand p-2" href="{% url 'rango:index' %}">Rango</a>
+
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -42,9 +54,12 @@
                         <li class="nav-item "><a class="nav-link" href="{% url 'auth_login' %}">Login</a></li>
                         {% endif %}
                     </ul>
+                    
                 </div>
+            
             </nav>
         </header>
+
         
         <div class="container-fluid">
             <div class="row">
