@@ -74,6 +74,11 @@
                     <p class='navbar-text'>Welcome back, {{ user.username }}! </p>
                 </li>
                 <li>
+                    <button type="submit" class="btn btn-outline-success">
+                    <a href="{% url 'rango:profile' user.username %}">Profile</a>
+                    </button>
+                </li>
+                <li>
                     <button type="submit" class="btn btn-outline-success"><a
                             href="{% url 'auth_logout' %}?next=/rango/">Logout</a></button>
                 </li>
