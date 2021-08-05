@@ -3,6 +3,8 @@ from django.db import models
 from django.db.models.deletion import CASCADE
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericRelation
+from django.utils.encoding import python_2_unicode_compatible
 
 class Category(models.Model):
     NAME_MAX_LENGTH=128
@@ -28,11 +30,15 @@ class Page(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     title = models.CharField(max_length=TITLE_MAX_LENGTH)
     url = models.URLField()
-    likes = models.ManyToManyField(User, related_name='page_post')
+    likes = models.ManyToManyField(User, related_name='page_post', blank=True)
     views = models.IntegerField(default=0)
     tag = models.CharField(max_length=TAG_MAX_LENGTH, blank=True)
     description = models.TextField(max_length=Description_MAX_LENGTH)
     image = models.ImageField(upload_to='page_images', blank=True)
+
+    def update_count(self):
+        self.views = self.views + 1
+        self.save()
 
     def __str__(self):
         return self.title
@@ -64,6 +70,7 @@ class Comment(models.Model):
     input = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='comment_like')
+    likecount = models.IntegerField(default=0)
 
     def __str__(self):
         return '%s - %s - %s' %(self.user.username, self.page.title, self.time)
