@@ -19,4 +19,5 @@ urlpatterns = [
     path('likecomment/<int:pk>', views.likecomment, name="like_comment"),
     path('optional_registration/', views.register_profile, name='register_profile'),
     path('counter/<int:pk>/', views.LinkRedirectView.as_view(), name='page-counter'),
+    path('profile/<username>/', views.ProfileView.as_view(), name='profile'),
 ]
