@@ -13,6 +13,7 @@ from django.http import HttpResponseRedirect
 from rango.models import UserProfile
 from rango.forms import UserProfileForm
 from registration.backends.default.views import RegistrationView
+from django.views.generic.base import RedirectView
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
@@ -54,15 +55,20 @@ def show_category(request, category_name_slug, sort_method='views'):
     except Category.DoesNotExist:
         context_dict['category'] = None
         context_dict['pages'] = None
+
+
     return render(request, 'rango/category.html', context=context_dict)
 
 def show_page(request, category_name_slug, page_title,):
     context_dict = {}
     page = Page.objects.get(title=page_title)
+    #page.views = page.views + 1
+    #page.save()
 
     comments = Comment.objects.filter(page=page)
     category = Category.objects.get(slug=category_name_slug)
     likes_count = page.likes.count()
+
     if page.likes.filter(id=request.user.id).exists():
         liked = True
     else:
@@ -78,14 +84,12 @@ def show_page(request, category_name_slug, page_title,):
     else:
         form = CommentForm()
 
-
     context_dict['page'] = page
     context_dict['likes_count'] = likes_count
     context_dict['liked'] = liked
     context_dict['category'] = category
     context_dict['comments'] = comments
     context_dict['form'] = form
-
 
     return render(request, 'rango/page.html', context=context_dict)
 
@@ -252,3 +256,12 @@ def register_profile(request):
         print(form.errors)
         context_dict = {'form': form}
         return render(request, 'rango/optional_registration.html', context_dict)
+
+class LinkRedirectView(RedirectView):
+    permanent = False
+    query_string = True
+
+    def get_redirect_url(self, *args, **kwargs):
+        page = get_object_or_404(Page, pk=kwargs['pk'])
+        page.update_count()
+        return page.url
