@@ -48,16 +48,63 @@
                 </p>
             </div>
 
+            {% if page.image %}
             <img src="{{MEDIA_URL}}{{page.image}}" alt="{{page.title}}" />
+            {% endif %}
+            <form action ="{% url 'rango:like_page' page.pk %}" method="POST">
+                {% csrf_token%}
+                {% if user.is_authenticated %}
+                    {% if not liked %}
+                        <button type="submit", name="page_id", value="{{ page.id }}">Like!</button> 
+                    {% else %}
+                        <button type="submit", name="page_id", value="{{ page.id }}">Unlike!</button> 
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'auth_login' %}">Login</a> to like
+                {% endif %}
+                - {{ likes_count }} Likes
+            </form>
 
             </div>
 
             <!-- Right content -->
             <div class="container__half">
-                Comment
+                <h2>Comments:</h2>
+                    {% if not page.comment.all %}
+                        No Comments
+                    {% else %}
+                        {% for comment in page.comment.all %}
+                            <Strong>{{ comment.user.username }} - {{ comment.time }} <br/></Strong>
+                            {{ comment.input }} 
+                            
+                            <form action="{% url 'rango:like_comment' comment.pk %}" method="POST">
+                                {% csrf_token %}
+                                {% if user not in comment.likes.all %}
+                                    <button type="submit", name="comment_id", value="{{ comment.id }}">Like</button>
+                                {% else %}
+                                    <button type="submit", name="comment_id", value="{{ comment.id }}">UnLike</button>
+                                {% endif %}
+                                - {{ comment.likes.count }} Likes
+                            </form>
+                            
+                            <br/> <br/>
+
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if user.is_authenticated %}
+                        <form method='POST'>
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <input type="submit" value="submit">
+                        </form>
+                    {% else %}
+                        <a href="{% url 'auth_login' %}">Login</a> to leave a comment.
+                    {% endif %}
             </div>
         </div>
     {% else %}
         The specified page does not exist.
     {% endif %}
 {% endblock %}
+
