@@ -7,7 +7,10 @@ class PageAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug':('name',)}
 
+class UserProfileAdmin(admin.ModelAdmin):
+    profile_display = ('level',)
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Page, PageAdmin)
-admin.site.register(UserProfile)
+admin.site.register(UserProfile,UserProfileAdmin)
 admin.site.register(Comment)

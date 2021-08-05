@@ -16,4 +16,5 @@ urlpatterns = [
     path('category/<slug:category_name_slug>/page/<page_title>/', views.show_page, name='show_page'),
     path('like/<int:pk>', views.like, name="like_page"),
     path('likecomment/<int:pk>', views.likecomment, name="like_comment"),
+    path('optional_registration/', views.register_profile, name='register_profile'),
 ]

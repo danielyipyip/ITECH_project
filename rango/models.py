@@ -43,6 +43,18 @@ class UserProfile(models.Model):
     # The additional attributes we wish to include.
     website = models.URLField(blank=True)
     picture = models.ImageField(upload_to='profile_images', blank=True)
+
+    LEVEL_CHOICES =(
+    ("",''),   
+    ("Beginner",'beginner'),
+    ("Junior Developer",'junior'),
+    ("Senior Developer",'senior'),
+    ("Professional",'professional'),
+    )
+    level = models.CharField(choices = LEVEL_CHOICES,max_length=200, blank=True)
+
+
+
     def __str__(self):
         return self.user.username
 
@@ -55,3 +67,4 @@ class Comment(models.Model):
 
     def __str__(self):
         return '%s - %s - %s' %(self.user.username, self.page.title, self.time)
+
