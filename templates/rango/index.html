@@ -79,7 +79,7 @@ Homepage
                     <ul class="list-group">
                         {% for page in pages %}
                         <li class="list-group-item">
-                            <a href="{{ page.url }}">{{ page.title }}</a>
+                            <a href="{% url 'rango:show_page' page.category.slug page.title%}">{{ page.title }}</a>
                             <span><small>(Views = {{page.views}})</small></span>
                         </li>
                         {% endfor %}
