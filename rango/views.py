@@ -52,6 +52,12 @@ def show_category(request, category_name_slug, sort_method='views'):
         context_dict['pages'] = None
     return render(request, 'rango/category.html', context=context_dict)
 
+def show_page(request, page_title):
+    context_dict = {}
+    page = Page.objects.get(title=page_title)
+    context_dict['page'] = page
+    return render(request, 'rango/page.html', context=context_dict)
+
 @login_required
 def add_category(request):
     form = CategoryForm()
@@ -88,6 +94,8 @@ def add_page(request,category_name_slug):
                 page = form.save(commit=False)
                 page.category = category
                 page.views = 0
+                if 'image' in request.FILES:
+                    page.image = request.FILES['image']
                 page.save()
                 return redirect(reverse('rango:show_category',kwargs={'category_name_slug':category_name_slug}))
         else:

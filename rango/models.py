@@ -22,10 +22,16 @@ class Category(models.Model):
 
 class Page(models.Model):
     TITLE_MAX_LENGTH=128
+    TAG_MAX_LENGTH=24
+    Description_MAX_LENGTH=200
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     title = models.CharField(max_length=TITLE_MAX_LENGTH)
     url = models.URLField()
+    likes = models.IntegerField(default=0)
     views = models.IntegerField(default=0)
+    tag = models.CharField(max_length=TAG_MAX_LENGTH, blank=True)
+    description = models.TextField(max_length=Description_MAX_LENGTH)
+    image = models.ImageField(upload_to='page_images', blank=True)
 
     def __str__(self):
         return self.title
