@@ -27,6 +27,7 @@
     <!-- Add icon library -->
     <!--for social media button-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <style>
         .fa {
             padding: 0px;
@@ -41,8 +42,6 @@
             background: #55ACEE;
             color: white;
         }
-
-
     </style>
     <title>
         Rango -
@@ -71,11 +70,14 @@
         <div class="collapse navbar-collapse w-100 flex-md-column" id="navbarCollapse">
             <ul class="navbar-nav ml-auto">
                 {% if user.is_authenticated %}
-                <li><p class='navbar-text'>Welcome back, {{ user.username }}! </p></li>
                 <li>
-                    <button type="submit" class="btn btn-outline-success"><a href="{% url 'auth_logout' %}?next=/rango/">Logout</a></button>
+                    <p class='navbar-text'>Welcome back, {{ user.username }}! </p>
                 </li>
-                
+                <li>
+                    <button type="submit" class="btn btn-outline-success"><a
+                            href="{% url 'auth_logout' %}?next=/rango/">Logout</a></button>
+                </li>
+
                 {% else %}
                 <li>
                     <form class="form-inline my-2 my-lg-0" role='form' action="{% url 'auth_login' %}" method='post'>
@@ -92,7 +94,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Or Login in using</a>
                 </li>
-                <li><a href="#" class="fa fa-twitter"></a></li>
+                <li><a href="#" method='post' class="fa fa-twitter"></a></li>
+
+                <li><a href="{% url 'social:begin' 'github' %}">Login with GitHub</a></li>
                 {% endif %}
             </ul>
             <!-- nav bar 2nd line -->

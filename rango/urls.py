@@ -1,5 +1,6 @@
 from django.urls import path
 from rango import views
+from django.conf.urls import url, include
 
 app_name='rango'
 
@@ -17,4 +18,6 @@ urlpatterns = [
     path('like/<int:pk>', views.like, name="like_page"),
     path('likecomment/<int:pk>', views.likecomment, name="like_comment"),
     path('optional_registration/', views.register_profile, name='register_profile'),
+    #for social login
+    #url('', include('social_django.urls', namespace='social')), 
 ]
