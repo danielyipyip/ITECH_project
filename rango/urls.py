@@ -14,4 +14,5 @@ urlpatterns = [
     path('restricted/', views.restricted, name='restricted'),
     # path('logout/', views.user_logout, name='logout'),
     path('page/<page_title>/', views.show_page, name='show_page'),
+    path('like/<int:pk>', views.like, name="like_page"),
 ]

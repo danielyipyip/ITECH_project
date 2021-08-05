@@ -48,7 +48,20 @@
                 </p>
             </div>
 
+            {% if page.image %}
             <img src="{{MEDIA_URL}}{{page.image}}" alt="{{page.title}}" />
+            {% endif %}
+            <form action ="{% url 'rango:like_page' page.pk %}" method="POST">
+                {% csrf_token%}
+                
+                {% if not liked %}
+                    <button type="submit", name="page_id", value="{{ page.id }}">Like!</button> 
+                {% else %}
+                    <button type="submit", name="page_id", value="{{ page.id }}">Unlike!</button> 
+                {% endif %}
+                
+                - {{ likes_count }} Likes
+            </form>
 
             </div>
 

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 # from django.http import HttpResponse
 from rango.models import Category
 from rango.models import Page
@@ -9,6 +9,7 @@ from django.urls import reverse
 # from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+from django.http import HttpResponseRedirect
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
@@ -49,10 +50,17 @@ def show_category(request, category_name_slug):
         context_dict['pages'] = None
     return render(request, 'rango/category.html', context=context_dict)
 
-def show_page(request, page_title):
+def show_page(request, page_title,):
     context_dict = {}
     page = Page.objects.get(title=page_title)
+    likes_count = page.likes.count()
+    if page.likes.filter(id=request.user.id).exists():
+        liked = True
+    else:
+        liked = False
     context_dict['page'] = page
+    context_dict['likes_count'] = likes_count
+    context_dict['liked'] = liked
     return render(request, 'rango/page.html', context=context_dict)
 
 @login_required
@@ -180,3 +188,15 @@ def visitor_cookie_handler(request):
         request.session['last_visit'] = last_visit_cookie
     # Update/set the visits cookie
     request.session['visits'] = visits
+
+def like(request, pk):
+    page = get_object_or_404(Page, id=request.POST.get('page_id'))
+    liked = False
+    if page.likes.filter(id=request.user.id).exists():
+        page.likes.remove(request.user)
+        liked = False
+    else:
+        page.likes.add(request.user)
+        liked = True
+    return HttpResponseRedirect(reverse('rango:show_page',kwargs={'page_title':page.title}))
+
