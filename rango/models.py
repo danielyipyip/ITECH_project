@@ -70,7 +70,6 @@ class Comment(models.Model):
     input = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='comment_like')
-    likecount = models.IntegerField(default=0)
 
     def __str__(self):
         return '%s - %s - %s' %(self.user.username, self.page.title, self.time)
