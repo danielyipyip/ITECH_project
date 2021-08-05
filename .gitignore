@@ -1,5 +1,8 @@
 db.sqlite3
 /__pycache__/
+/__pycache__/*
+__pycache__/
+__pycache__/*
 *.pyc
 /tango_with_django_2_code/
 bing.key

@@ -78,10 +78,11 @@
                 
                 {% else %}
                 <li>
-                    <form class="form-inline my-2 my-lg-0" action="{% url 'auth_login' %}" method='post'>
+                    <form class="form-inline my-2 my-lg-0" role='form' action="{% url 'auth_login' %}" method='post'>
+                        {% csrf_token %}
                         <input type="text" name='username' class="form-control" placeholder="User ID">
                         <input type="password" name="password" class="form-control" placeholder="Password">
-                        <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Login</button>
+                        <button type="submit" value='submit' class="btn btn-outline-success my-2 my-sm-0">Login</button>
                     </form>
                 </li>
                 <li class="nav-item active">
