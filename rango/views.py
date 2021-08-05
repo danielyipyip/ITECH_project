@@ -10,6 +10,9 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.http import HttpResponseRedirect
+from rango.models import UserProfile
+from rango.forms import UserProfileForm
+from registration.backends.default.views import RegistrationView
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
@@ -18,7 +21,7 @@ def index(request):
     context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
     context_dict['categories'] = category_list
     context_dict['pages'] = page_list
-    context_dict['special_pages'] = Page.objects.order_by('-views')[6]
+    context_dict['special_pages'] = Page.objects.order_by('-views')[4]
 
     visitor_cookie_handler(request)
     # Obtain our Response object early so we can add cookie information.
@@ -232,3 +235,20 @@ def likecomment(request, pk):
     else:
         comment.likes.add(request.user)
     return HttpResponseRedirect(reverse('rango:show_page',kwargs={'category_name_slug':page.category.slug , 'page_title':page.title}))
+
+@login_required
+def register_profile(request):
+
+    form = UserProfileForm()
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            user_profile = form.save(commit=False)
+            user_profile.user = request.user
+            user_profile.save()
+        return redirect(reverse('rango:index'))
+    else:
+        print(form.errors)
+        context_dict = {'form': form}
+        return render(request, 'rango/optional_registration.html', context_dict)
