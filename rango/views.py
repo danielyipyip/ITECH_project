@@ -44,9 +44,9 @@ def show_category(request, category_name_slug, sort_method='views'):
         category = Category.objects.get(slug=category_name_slug)
 # Retrieve all page; filter() will return a list of page objects/ empty list.
         if (sort_method=='views'):
-            pages = Page.objects.filter(category=category).order_by('-views')
+            pages = Page.objects.filter(category=category).order_by('-views')[:]
         else:
-            pages = Page.objects.filter(category=category).order_by('-like')
+            pages = Page.objects.filter(category=category).order_by('-like')[:]
 # Adds our results list to the template context under name pages.
         context_dict['pages'] = pages
 # We also add the category object from the database to the context dictionary.
