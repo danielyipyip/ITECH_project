@@ -1,35 +1,92 @@
-{% extends 'rango/base.html' %}
+{% extends 'rango/base_trying.html' %}
 {% load staticfiles %}
 
 {% block title_block %}
-    {% if category %}
-        {{ category.name }}
-    {% else %}
-        Unknown Category
-    {% endif %}
+{% if category %}
+{{ category.name }}
+{% else %}
+Unknown Category
+{% endif %}
 {% endblock %}
 
+
+{% block JS_block %}
+<script>
+    $(document).ready(function(){
+        $('#sort_views').click(function(){
+            if ($('#sort_views').attr("class")=="btn btn-light"){
+                $('#sort_views').attr("class", "btn btn-primary")
+                $('#sort_like').attr("class", "btn btn-light")
+            }
+        })
+        $('#sort_like').click(function(){
+            if ($('#sort_like').attr("class")=="btn btn-light"){
+                $('#sort_views').attr("class", "btn btn-light")
+                $('#sort_like').attr("class", "btn btn-primary")
+            }
+        })
+    })
+</script>
+
+{% endblock %}
+
+
 {% block body_block %}
-    {% if category %}
-        <div class="jumbotron p-4">
-            <div class="container">
-                <h1>{{ category.name }}</h1>
+{% if category %}
+<div class="jumbotron p-3">
+    <div class="container">
+        <h1>{{ category.name }}</h1>
+        <div class='row'>
+            <div class='col-md-9'>
+                <div class="text-right">
+                    sort by:
+                    <button type="button" class="btn btn-primary" id='sort_views'>views</button>
+                    /
+
+                    <button type="button" class="btn btn-light" id='sort_like'>likes</button>
+                </div>
+            </div>
+            <div class='col-md-3'>
+                <p class="text-center">Top comment: </p>
             </div>
         </div>
-        {% if pages %}
-        <ul>
-            {% for page in pages %}
-            <li><a href="{{ page.url }}">{{ page.title }}</a></li>
-            {% endfor %}
-        </ul>
-        {% else %}
-            <strong>No pages currently in category.</strong>
-        {% endif %}
+    </div>
+</div>
 
-        {% if user.is_authenticated %}
-            <a href="{% url 'rango:add_page' category.slug %}">Add Page</a> <br />
-        {% endif %}
-    {% else %}
-        The specified category does not exist.
-    {% endif %}
+
+{% if pages %}
+{% for page in pages %}
+
+<div class='row mb-3'>
+    <!--page part-->
+
+    <div class='col-md-9 border'>
+        <h3><a href="{{ page.url }}">{{ page.title }}</a></h3>
+        <p>Descriptions...</p>
+        <small class='text-right'>Views = {{page.views}} Likes = {{pages.likes}}</small>
+    </div>
+
+
+    <!--comment part-->
+    <div class='col-md-3 border'>
+        <p>comments</p>
+    </div>
+
+</div>
+
+{% endfor %}
+{% else %}
+<strong>No pages currently in category.</strong>
+{% endif %}
+
+
+
+
+{% if user.is_authenticated %}
+<a href="{% url 'rango:add_page' category.slug %}">Add Page</a> <br />
+{% endif %}
+
+{% else %}
+The specified category does not exist.
+{% endif %}
 {% endblock %}

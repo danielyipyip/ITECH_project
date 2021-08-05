@@ -50,6 +50,8 @@
         How to Tango with Django!
         {% endblock %}
     </title>
+    {% block JS_block %}
+    {% endblock %}
 </head>
 
 
@@ -69,9 +71,11 @@
         <div class="collapse navbar-collapse w-100 flex-md-column" id="navbarCollapse">
             <ul class="navbar-nav ml-auto">
                 {% if user.is_authenticated %}
+                <li><p class='navbar-text'>Welcome back, {{ user.username }}! </p></li>
                 <li>
-                    <p>Welcome back, {{ user.name }}! </p>
+                    <button type="submit" class="btn btn-outline-success"><a href="{% url 'auth_logout' %}?next=/rango/">Logout</a></button>
                 </li>
+                
                 {% else %}
                 <li>
                     <form class="form-inline my-2 my-lg-0" action="{% url 'auth_login' %}" method='post'>

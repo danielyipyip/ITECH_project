@@ -31,14 +31,17 @@ def about(request):
     response = render(request, 'rango/about.html', context=context_dict)
     return response
 
-def show_category(request, category_name_slug):
+def show_category(request, category_name_slug, sort_method='views'):
 # Create a context dictionary which we can pass to the template rendering engine.
     context_dict = {}
     try:
 # The .get() method returns one model instance or raises an DoesNotExist exception.
         category = Category.objects.get(slug=category_name_slug)
 # Retrieve all page; filter() will return a list of page objects/ empty list.
-        pages = Page.objects.filter(category=category)
+        if (sort_method=='views'):
+            pages = Page.objects.filter(category=category).order_by('-views')
+        else:
+            pages = Page.objects.filter(category=category).order_by('-like')
 # Adds our results list to the template context under name pages.
         context_dict['pages'] = pages
 # We also add the category object from the database to the context dictionary.
