@@ -47,5 +47,11 @@ class UserProfile(models.Model):
         return self.user.username
 
 class Comment(models.Model):
-    page = models.ForeignKey(Page, on_delete=CASCADE, related_name="comments",)
-    user = models.ForeignKey(User, on_delete=CASCADE, related_name="comments",)
+    page = models.ForeignKey(Page, on_delete=CASCADE, related_name="comment",)
+    user = models.ForeignKey(User, on_delete=CASCADE, related_name="comment",)
+    input = models.TextField()
+    time = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(User, related_name='comment_like')
+
+    def __str__(self):
+        return '%s - %s - %s' %(self.user.username, self.page.title, self.time)

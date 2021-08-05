@@ -1,0 +1,13 @@
+{% extends "rango/base.html" %}
+
+{% block title %}Add Comment{% endblock %}
+
+{% block body_block %}
+    <div>
+        <form role="form" method="post" action="{% url 'rango:add_comment' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+{% endblock %}

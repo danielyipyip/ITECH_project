@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 # from django.http import HttpResponse
-from rango.models import Category
+from rango.models import Category, Comment
 from rango.models import Page
-from rango.forms import CategoryForm, PageForm
+from rango.forms import CategoryForm, CommentForm, PageForm
 # from rango.forms import UserForm, UserProfileForm
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -50,17 +50,37 @@ def show_category(request, category_name_slug):
         context_dict['pages'] = None
     return render(request, 'rango/category.html', context=context_dict)
 
-def show_page(request, page_title,):
+def show_page(request, category_name_slug, page_title,):
     context_dict = {}
     page = Page.objects.get(title=page_title)
+
+    comments = Comment.objects.filter(page=page)
+    category = Category.objects.get(slug=category_name_slug)
     likes_count = page.likes.count()
     if page.likes.filter(id=request.user.id).exists():
         liked = True
     else:
         liked = False
+    
+    if request.method == 'POST':
+        form = CommentForm(request.POST or None)
+        if form.is_valid():
+            input = request.POST.get('input')
+            comment = Comment.objects.create(page=page, user=request.user, input=input)
+            comment.save()
+            return redirect(reverse('rango:show_page',kwargs={'category_name_slug':category_name_slug, 'page_title':page.title}))
+    else:
+        form = CommentForm()
+
+
     context_dict['page'] = page
     context_dict['likes_count'] = likes_count
     context_dict['liked'] = liked
+    context_dict['category'] = category
+    context_dict['comments'] = comments
+    context_dict['form'] = form
+
+
     return render(request, 'rango/page.html', context=context_dict)
 
 @login_required
@@ -198,5 +218,14 @@ def like(request, pk):
     else:
         page.likes.add(request.user)
         liked = True
-    return HttpResponseRedirect(reverse('rango:show_page',kwargs={'page_title':page.title}))
+    return HttpResponseRedirect(reverse('rango:show_page',kwargs={'category_name_slug':page.category.slug , 'page_title':page.title}))
 
+def likecomment(request, pk):
+    comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
+    page = comment.page
+
+    if comment.likes.filter(id=request.user.id).exists():
+        comment.likes.remove(request.user)
+    else:
+        comment.likes.add(request.user)
+    return HttpResponseRedirect(reverse('rango:show_page',kwargs={'category_name_slug':page.category.slug , 'page_title':page.title}))
