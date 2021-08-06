@@ -2,34 +2,146 @@
 {% load staticfiles %}
 
 {% block title_block %}
-Profile for {{ selected_user.username }}
+Profile Page
 {% endblock %}
+
 {% block body_block %}
 
-<div class="jumbotron p-4">
+
+<style>
+    #infoheader {
+        font-weight: bold;
+    }
+</style>
+
+<div class="container pt-5">
     <div class="container">
-        <h1 class="jumbotron-heading">{{ selected_user.username }}'s Profile</h1>
+        <h class = "display-4 text-danger";>
+            {{ selected_user.username }}'s Profile</h>
     </div>
 </div>
 
-<div class="container">
+
+<div class="container pt-5">
+
+    <h2>Your Profile Details</h2><br>
+    <p style="color: rgba(167, 17, 17, 0.87); font-size:200%">{{ message }} </style> </p>
+    <div class="container pt-5"></div>
     <div class="row">
-        <img src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="300" height="300" alt="{{ selected_user.username }}'s profile image" />
-        <br />
-        <div>
+        <div class="col-md-4">
+            <div class="text-center">
+                <img src="{{ MEDIA_URL }}{{ user_profile.picture }}" class="avatar img-circle" alt="Profile Picture" width=200 height=200>
+            </div>
+        </div>
+
+
+        <div class="col-md-8">
+            <div class ="row">
+                <div class="col-sm-4">
+                    <p id = "infoheader">UserName:</p>
+                </div>
+                <div class="col-sm-4">
+                    <p></h>{{selected_user.username}}</p></p>
+                </div>
+            </div>
+            <div class ="row">
+                <div class="col-sm-4">
+                    <p id = "infoheader">Email:</p>
+                </div>
+                <div class="col-sm-4">
+                    <p>Email: {{selected_user.email}}</p>
+                </div>
+            </div>
+            <div class ="row">
+                <div class="col-sm-4">
+                    <p id = "infoheader">Name:</p>
+                </div>
+                <div class="col-sm-4">
+                    <p></h>{{user_profile.first_name}}  {{user_profile.last_name}}</p></p>
+                </div>
+            </div>
+            <div container pt-5>
             {% if selected_user == user %}
-            <form method="post" action="." enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <input type="submit" value="Update" />
-            </form>
+            <p>You may update your profile details Below .</p>
+            <form class="form-horizontal" role="form" method="post" action="." enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class ="row">
+                <div class="col-sm-4">
+                    <label id = "infoheader">First Name:</p>
+                </div>
+                <div class="col-sm-4">
+                    <p>{{ form.first_name }}</p>
+                </div>
+            </div>
+
+            <div class ="row">
+                <div class="col-sm-4">
+                    <label id = "infoheader">Last Name:</p>
+                </div>
+                <div class="col-sm-4">
+                    <p>{{ form.last_name }}</p>
+                </div>
+            </div>
+
+            <div class ="row">
+                <div class="col-sm-4">
+                    <label id = "infoheader">Level of expertise:</p>
+                </div>
+                <div class="col-sm-4">
+                    <p>{{ form.level }}</p>
+                </div>
+            </div>
+
+            <div class ="row">
+                <div class="col-sm-4">
+                    <label id = "infoheader">Website</p>
+                </div>
+                <div class="col-sm-4">
+                    <p>{{ form.website }}</p>
+                </div>
+            </div>
+
+            <div class ="row">
+                <div class="col-sm-4">
+                    <label id = "infoheader">Change picture</p>
+                </div>
+                <div class="col-sm-4">
+                    <p>{{ form.picture }}</p>
+                </div>
+            </div>
+
+                <div class="row">  
+                    <div class="pt-5 col-sm-12 col-md-12 col-xs-12">  
+                        <div class="float-right">
+                            <button class="btn btn-primary" type="submit">Update Profile</button>
+                        </div>  
+                    </div>  
+                </div>
+                
+                
+  
             {% else %}
-            <p>
-            <strong>Website:</strong>
-            <a href="{{ user_profile.website }}">{{ user_profile.website }}</a>
-            </p>
+            <div class ="row">
+                <div class="col-sm-4">
+                    <p id = "infoheader">Level of expertise:</p>
+                </div>
+                <div class="col-sm-4">
+                    <p>{{ user_profile.level }}</p>
+                </div>
+            </div>
+
+            <div class ="row">
+                <div class="col-sm-4">
+                    <p id = "infoheader">Your website:</p>
+                </div>
+                <div class="col-sm-4">
+                    <p>{{ user_profile.website }}</p>
+                </div>
+            </div>
+
             {% endif %}
         </div>
-    </div>
+    </div>  
 </div>
 {% endblock %}

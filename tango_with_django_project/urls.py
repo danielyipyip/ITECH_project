@@ -23,6 +23,7 @@ from registration.backends.simple.views import RegistrationView
 from django.urls import reverse
 from django.conf.urls import url, include
 
+
 class MyRegistrationView(RegistrationView):
     def get_success_url(self, user):
         return reverse('rango:register_profile')

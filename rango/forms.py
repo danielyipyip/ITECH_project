@@ -1,6 +1,9 @@
 from django import forms
 from rango.models import Comment, Page, Category, UserProfile
 from django.contrib.auth.models import User
+from registration.forms import RegistrationForm
+
+
 
 class CategoryForm (forms.ModelForm):
     name = forms.CharField(max_length=Category.NAME_MAX_LENGTH, help_text="Please enter the category name.")
@@ -37,17 +40,26 @@ class PageForm(forms.ModelForm):
         return cleaned_data
 
 class UserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
+
     
     class Meta:
         model = User
         fields = ('username', 'email', 'password', 'first_name','last_name')
 
+LEVEL_CHOICES =(
+    ("",''),   
+    ("Beginner",'beginner'),
+    ("Junior Developer",'junior'),
+    ("Senior Developer",'senior'),
+    ("Professional",'professional'),
+    )
+
 class UserProfileForm(forms.ModelForm):
+    level = forms.ChoiceField(choices = LEVEL_CHOICES)
 
     class Meta:
         model = UserProfile
-        fields = ('level','website','picture')
+        fields = ('first_name','last_name','level','website','picture')
 
 class CommentForm(forms.ModelForm):
     input = forms.CharField(widget=forms.Textarea(attrs={
@@ -56,3 +68,4 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('input',)
+

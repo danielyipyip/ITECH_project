@@ -256,7 +256,7 @@ def register_profile(request):
             user_profile = form.save(commit=False)
             user_profile.user = request.user
             user_profile.save()
-        return redirect(reverse('rango:index'))
+        return redirect(reverse('rango:registration_completed'))
     else:
         print(form.errors)
         context_dict = {'form': form}
@@ -280,43 +280,56 @@ class ProfileView(View):
             return None
         
         user_profile = UserProfile.objects.get_or_create(user=user)[0]
-        form = UserProfileForm({'level' : user_profile.level,
-                                    'website': user_profile.website,
-                                    'picture': user_profile.picture})
+        form = UserProfileForm({
+                                'first_name':user_profile.first_name,
+                                'last_name':user_profile.last_name,
+                                'level' : user_profile.level,
+                                'website': user_profile.website,
+                                'picture': user_profile.picture})
         
         return (user, user_profile, form)
     
     @method_decorator (login_required)
-    def get(self,request,username,):
+    def get(self,request,username):
+
+        context_dict = {}
+        
         try:
             (user, user_profile, form) = self.get_user_details(username)
         except TypeError:
             return redirect(reverse('rango:index'))
 
-        context_dict = {'user_profile': user_profile,
-                        'selected_user': user,
-                        'form': form}
-
+        context_dict ['message']=''
+        context_dict ['user_profile'] = user_profile
+        context_dict ['selected_user']= user
+        context_dict ['form'] = form
         return render(request, 'rango/userprofile.html', context_dict)
     
     @method_decorator(login_required)
     def post(self, request, username):
+        context_dict = {}
         try:
             (user, user_profile, form) = self.get_user_details(username)
         except TypeError:
             return redirect(reverse('rango:index'))
 
         form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
-
+        
         if form.is_valid():
             form.save(commit=True)
-            return redirect('rango:profile', user.username)
+            context_dict ['message']='Your profile has been succuessfully updated!'
+            context_dict ['user_profile'] = user_profile
+            context_dict ['selected_user']= user
+            context_dict ['form'] = form
+            return render(request, 'rango/userprofile.html', context_dict)
 
         else:
             print(form.errors)
-
-        context_dict = {'user_profile': user_profile,
-                        'selected_user': user,
-                        'form': form}
         
         return render(request, 'rango/userprofile.html', context_dict)
+
+
+def registration_completed(request):
+    context_dict={ 'message' : 'Congratulations! Your account is now successfully created.' }
+    response = render(request, 'rango/registration_completed.html',context=context_dict)
+    return response

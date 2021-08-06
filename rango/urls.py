@@ -20,4 +20,5 @@ urlpatterns = [
     path('optional_registration/', views.register_profile, name='register_profile'),
     path('counter/<int:pk>/', views.LinkRedirectView.as_view(), name='page-counter'),
     path('profile/<username>/', views.ProfileView.as_view(), name='profile'),
+    path('registration_completed/', views.registration_completed, name='registration_completed'),
 ]

@@ -49,6 +49,8 @@ class UserProfile(models.Model):
     # The additional attributes we wish to include.
     website = models.URLField(blank=True)
     picture = models.ImageField(upload_to='profile_images', blank=True)
+    first_name = models.CharField(max_length=100, blank=True)
+    last_name = models.CharField(max_length=100, blank=True)
 
     LEVEL_CHOICES =(
     ("",''),   
@@ -70,6 +72,7 @@ class Comment(models.Model):
     input = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='comment_like')
+    likecount = models.IntegerField(default=0)
 
     def __str__(self):
         return '%s - %s - %s' %(self.user.username, self.page.title, self.time)
@@ -77,3 +80,5 @@ class Comment(models.Model):
 class BookmarkList(models.Model):
     userprofile = models.OneToOneField(User,on_delete=models.CASCADE)
     page = models.ForeignKey(Page, on_delete=models.CASCADE)
+
+
