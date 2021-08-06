@@ -21,7 +21,7 @@ Unknown Category
 
 {% block JS_block %}
 
-<script src="rango_js/categoryscripts.js"></script>
+<script src="{% static 'rango_js/categoryscripts.js' %}"></script>
 
 {% endblock %}
 
@@ -58,7 +58,7 @@ Unknown Category
             <h3><a href="{% url 'rango:show_page' category.slug page.title%}">{{ page.title }}</a></h3>
             <a href="{% url 'rango:page-counter' page.pk %}" target="_blank" rel="noopener noreferrer">Link to the
                 website</a>
-            <p>Descriptions...</p>
+            <p>Description: {{page.description}}</p>
             <small class='text-right'>Views = {{page.views}} Likes = {{page.likes.count}}</small>
 
             <div>
@@ -75,7 +75,7 @@ Unknown Category
         </div>
         <!--comment part-->
         <div class='col-md-3 border'>
-            {{page.comment}}
+            comments
         </div>
 
     </div>

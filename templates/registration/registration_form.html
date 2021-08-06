@@ -1,25 +1,18 @@
 {% extends 'rango/base.html' %}
 {% load staticfiles %}
 
-
 {% block title_block %}
 Create your Account
 {% endblock %}
 
+
+
+
 {% block JS_block %}
-<script src="{​​​% static 'rango_js/passwordvalidator.js' %}"></script>
+<script src="{% static 'rango_js/reg_form.js' %}"></script>
 {% endblock %}
 
-
 {% block body_block %}
-
-
-<style>
-    #questionheader {
-        font-weight: bold;
-    }
-</style>
-
     <div class="container pt-5">
         <h class = "display-4 text-danger";>Create Your Account -- Step 1</h> 
     </div>

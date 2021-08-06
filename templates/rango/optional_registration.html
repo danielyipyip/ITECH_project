@@ -5,18 +5,18 @@
 Create your Account
 {% endblock %}
 
-{% block body_block %}
-
+{% block JS_block %}
 <script>
     function profilepic_upload (input) {
-  if (input.files && input.files[0]) {
-    var src = URL.createObjectURL(input.files[0])
-    $('#profilepic').attr('src', src)
-  }
-}
+        if (input.files && input.files[0]) {
+            var src = URL.createObjectURL(input.files[0])
+            $('#profilepic').attr('src', src)
+        }
+    }
 </script>
+{% endblock %}
 
-
+{% block body_block %}
 <div class="container pt-5">
     <h class = "display-4 text-danger";>Create Your Account -- Step 2</h> 
 </div>
