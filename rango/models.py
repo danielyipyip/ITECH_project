@@ -55,7 +55,7 @@ class UserProfile(models.Model):
     last_name = models.CharField(max_length=100, blank=True)
 
     LEVEL_CHOICES =(
-    ("",''),   
+    (" ",''),   
     ("Beginner",'beginner'),
     ("Junior Developer",'junior'),
     ("Senior Developer",'senior'),

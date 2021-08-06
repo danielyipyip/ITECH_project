@@ -47,7 +47,7 @@ class UserForm(forms.ModelForm):
         fields = ('username', 'email', 'password', 'first_name','last_name')
 
 LEVEL_CHOICES =(
-    ("",''),   
+    (" ",''),   
     ("Beginner",'beginner'),
     ("Junior Developer",'junior'),
     ("Senior Developer",'senior'),
@@ -55,7 +55,7 @@ LEVEL_CHOICES =(
     )
 
 class UserProfileForm(forms.ModelForm):
-    level = forms.ChoiceField(choices = LEVEL_CHOICES)
+    level = forms.ChoiceField(choices = LEVEL_CHOICES,required ="False")
 
     class Meta:
         model = UserProfile
