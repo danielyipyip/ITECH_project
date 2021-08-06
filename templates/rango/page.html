@@ -42,15 +42,139 @@
 {% endblock %}
 
 {% block body_block %}
-{% if page %}
-<h1>{{ page.title }}</h1>
-<div id="container">
-    <div class="container__half">
-        <div>
-            <!--<p><a href="{{ page.url }}">Link to the website</a></p>-->
-            <a href="{% url 'rango:page-counter' page.pk %}" target="_blank" rel="noopener noreferrer">Link to the
-                website</a>
-        </div>
+    {% if page %}
+        <h1>{{ page.title }}</h1>
+        <div id="container">
+            <div class="container__half">
+                <div>
+                    <!--<p><a href="{{ page.url }}">Link to the website</a></p>-->
+                    <a href="{% url 'rango:page-counter' page.pk %}" target="_blank" rel="noopener noreferrer">Link to the website</a>
+                </div>
+
+                <div>
+                    <p id="test">
+                    {% if page.description != "none" %}
+                        Description: {{ page.description }}
+                    {% else %}
+                        No description.
+                    {% endif %}
+                    </p>
+                </div>
+
+                <div>
+                    <p> 
+                        Category: {{ page.category }} 
+                    </p>
+                </div>
+
+                <div>
+                    <p>
+                        Views: {{ page.views }}
+                    </p>
+                </div>
+
+                <div>
+                    {% if page.uploader %}
+                    <p>
+                        Uploaded by: <a href ="{% url 'rango:profile' page.uploader%}">{{ page.uploader }}</a>
+                    </p>
+                    {% endif %}
+                </div>
+
+            
+                <div>
+                    {% if page.tag == "Beginner"%}
+                        Tag: <span class="tag" id="beginner_tag">{{ page.tag }}</span>
+                    {% elif page.tag == "Junior Developer" %}
+                        Tag: <span class="tag" id="jd_tag">{{ page.tag }}</span>
+                    {% elif page.tag == "Senior Developer"%}
+                        Tag: <span class="tag" id="sd_tag">{{ page.tag }}</span>
+                    {% elif page.tag == "Professional"%}
+                        Tag: <span class="tag" id="pro_tag">{{ page.tag }}</span>
+                    {% endif %}
+                </div>
+
+                <br/>
+
+                <div>
+                    {% if page.image %}
+                    <img src="{{MEDIA_URL}}{{page.image}}" alt="{{page.title}}" />
+                    {% endif %}
+                </div>
+
+                <br/>
+
+                <div>
+                <form action ="{% url 'rango:like_page' page.pk %}" method="POST">
+                    {% csrf_token%}
+                    {% if user.is_authenticated %}
+                        {% if not liked %}
+                            <button type="submit", name="page_id", value="{{ page.id }}">Like!</button> 
+                        {% else %}
+                            <button type="submit", name="page_id", value="{{ page.id }}">Unlike!</button> 
+                        {% endif %}
+                    {% else %}
+                        <a href="{% url 'auth_login' %}">Login</a> to like
+                    {% endif %}
+                    - {{ likes_count }} Likes
+                </form>
+                </div>
+
+                <div>
+                    {% if is_bookmarked %}
+                    <a href="{% url 'rango:bookmark_page' id=page.id %}">Remove from Bookmark</a>
+                    {% else %}
+                    <a href="{% url 'rango:bookmark_page' id=page.id %}">Add to Bookmark</a>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <!-- Right content -->
+            <div class="container__half">
+                <h2>Comments:</h2>
+                    {% if not page.comment.all %}
+                        No Comments
+                    {% else %}
+                        {% for comment in comments %}
+                            
+                            <div class="comment">
+                            <Strong><a href ="{% url 'rango:profile' comment.user.username%}">{{ comment.user.username }}</a> - {{ comment.time }} <br/></Strong>
+                            {{ comment.input }} 
+                            </div>
+
+                            <div class="comment_like">
+                            {% if user.is_authenticated %}
+                                <form action="{% url 'rango:like_comment' comment.pk %}" method="POST">
+                                    {% csrf_token %}
+                                        {% if user not in comment.likes.all %}
+                                            <button type="submit", name="comment_id", value="{{ comment.id }}">Like</button>
+                                        {% else %}
+                                            <button type="submit", name="comment_id", value="{{ comment.id }}">UnLike</button>
+                                        {% endif %}
+                                    - {{ comment.likes.count }} Likes
+                                </form>
+                            </div>
+
+                            <br/>
+                            {% endif %}
+                            <br/> <br/>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <hr/>
+                    {% if user.is_authenticated %}
+                    Add a Comment: <br/> 
+
+                        <form method='POST'>
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <input type="submit" value="submit">
+                        </form>
+                    {% else %}
+                        <a href="{% url 'auth_login' %}">Login</a> to leave a comment.
+                    {% endif %}
+            </div>
 
         <div>
             <p id="test">
