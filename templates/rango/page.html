@@ -60,6 +60,15 @@
                 </div>
 
                 <div>
+                    {% if page.uploader %}
+                    <p>
+                        Uploaded by: <a href ="{% url 'rango:profile' page.uploader%}">{{ page.uploader }}</a>
+                    </p>
+                    {% endif %}
+                </div>
+
+            
+                <div>
                     {% if page.tag == "Beginner"%}
                         Tag: <span class="tag" id="beginner_tag">{{ page.tag }}</span>
                     {% elif page.tag == "Junior Developer" %}

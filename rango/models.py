@@ -36,7 +36,8 @@ class Page(models.Model):
     description = models.TextField(max_length=Description_MAX_LENGTH)
     image = models.ImageField(upload_to='page_images', blank=True)
     bookmark = models.ManyToManyField(User, related_name="bookmark", blank=True)
-    
+    uploader = models.CharField(max_length=128, blank=True)
+
     def update_count(self):
         self.views = self.views + 1
         self.save()
