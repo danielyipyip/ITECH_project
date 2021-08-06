@@ -77,7 +77,6 @@
                         Tag: <span class="tag" id="sd_tag">{{ page.tag }}</span>
                     {% elif page.tag == "Professional"%}
                         Tag: <span class="tag" id="pro_tag">{{ page.tag }}</span>
-
                     {% endif %}
                 </div>
 
@@ -87,19 +86,24 @@
                     {% if page.image %}
                     <img src="{{MEDIA_URL}}{{page.image}}" alt="{{page.title}}" />
                     {% endif %}
-                    <form action ="{% url 'rango:like_page' page.pk %}" method="POST">
-                        {% csrf_token%}
-                        {% if user.is_authenticated %}
-                            {% if not liked %}
-                                <button type="submit", name="page_id", value="{{ page.id }}">Like!</button> 
-                            {% else %}
-                                <button type="submit", name="page_id", value="{{ page.id }}">Unlike!</button> 
-                            {% endif %}
+                </div>
+
+                <br/>
+
+                <div>
+                <form action ="{% url 'rango:like_page' page.pk %}" method="POST">
+                    {% csrf_token%}
+                    {% if user.is_authenticated %}
+                        {% if not liked %}
+                            <button type="submit", name="page_id", value="{{ page.id }}">Like!</button> 
                         {% else %}
-                            <a href="{% url 'auth_login' %}">Login</a> to like
+                            <button type="submit", name="page_id", value="{{ page.id }}">Unlike!</button> 
                         {% endif %}
-                        - {{ likes_count }} Likes
-                    </form>
+                    {% else %}
+                        <a href="{% url 'auth_login' %}">Login</a> to like
+                    {% endif %}
+                    - {{ likes_count }} Likes
+                </form>
                 </div>
 
                 <div>
@@ -119,8 +123,11 @@
                         No Comments
                     {% else %}
                         {% for comment in comments %}
+                            
+                            <div class="comment">
                             <Strong><a href ="{% url 'rango:profile' comment.user.username%}">{{ comment.user.username }}</a> - {{ comment.time }} <br/></Strong>
                             {{ comment.input }} 
+                            </div>
 
                             <div class="comment_like">
                             {% if user.is_authenticated %}
