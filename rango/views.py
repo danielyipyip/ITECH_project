@@ -61,9 +61,14 @@ def show_category(request, category_name_slug, sort_method='views'):
 # We also add the category object from the database to the context dictionary.
 # We'll use this in the template to verify that the category exists.
         context_dict['category'] = category
+        comments={}
+        for page in pages:
+            comments[page.title]=Comment.objects.filter(page=page).order_by('-likecount').first()
+        context_dict['comments']=comments
     except Category.DoesNotExist:
         context_dict['category'] = None
         context_dict['pages'] = None
+        context_dict['comments']=None
     return render(request, 'rango/category.html', context=context_dict)
 
 
@@ -201,7 +206,7 @@ def like_count(request):
     page = Page.objects.get(title=request.GET.get('page_title', None))
     likes_count = page.likes.count()
     data = {
-        'likse': like_count
+        'likes': like_count
     }
     return JsonResponse(data)
 
@@ -214,6 +219,14 @@ def likecomment(request, pk):
     else:
         comment.likes.add(request.user)
     return HttpResponseRedirect(reverse('rango:show_page',kwargs={'category_name_slug':page.category.slug , 'page_title':page.title}))
+
+def view_count(request):
+    page = Page.objects.get(title=request.GET.get('page_title', None))
+    view_count = page.views
+    data = {
+        'views': view_count
+    }
+    return JsonResponse(data)
 
 @login_required
 def register_profile(request):

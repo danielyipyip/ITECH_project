@@ -1,0 +1,78 @@
+{% extends 'rango/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+{% if category %}
+{{ category.name }}
+{% else %}
+Unknown Category
+{% endif %}
+{% endblock %}
+
+
+{% block JS_block %}
+{% endblock %}
+
+
+{% block body_block %}
+{% if category %}
+<div class="jumbotron p-3">
+    <div class="container">
+        <h1 id='categoey_name'>{{ category.name }}</h1>
+        <div class='row'>
+            <div class='col-md-9'>
+                <div class="text-right">
+                    <form id="like_form" action="{% url 'rango:index' %}" method="post">
+                        {% csrf_token%}
+                        sort by:
+                        <button type="button" class="btn btn-primary" id='sort_views'>views</button>
+                        /
+                        <button type="button" class="btn btn-light" id='sort_like'>likes</button>
+                    </form>
+                </div>
+            </div>
+            <div class='col-md-3'>
+                <p class="text-center">Top comment: </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id='search_result'>
+    {% if pages %}
+    {% for page in pages %}
+
+    <div class='row mb-3'>
+        <!--page part-->
+
+        <div class='col-md-9 border'>
+            <h3><a href="{% url 'rango:show_page' category.slug page.title%}">{{ page.title }}</a></h3>
+            <a href="{% url 'rango:page-counter' page.pk %}" target="_blank" rel="noopener noreferrer">Link to the
+                website</a>
+            <p>Descriptions...</p>
+            <small class='text-right'>Views = {{page.views}} Likes = {{page.likes.count}}</small>
+        </div>
+
+        <!--comment part-->
+        <div class='col-md-3 border'>
+            Comment...
+        </div>
+
+    </div>
+
+    {% endfor %}
+    {% else %}
+    <strong>No pages currently in category.</strong>
+    {% endif %}
+</div>
+
+
+
+{% if user.is_authenticated %}
+<a href="{% url 'rango:add_page' category.slug %}">Add Page</a> <br />
+{% endif %}
+
+{% else %}
+The specified category does not exist.
+{% endif %}
+{% endblock %}

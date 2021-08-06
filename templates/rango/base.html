@@ -10,6 +10,7 @@
     <meta name="description" content="ITech project">
     <meta name="author" content="group caffine">
     <link rel="icon" href="{% static 'images/rango.jpg' %}">
+    <link href="{% static 'rango_css/tag.css' %}" rel="stylesheet">
     <!--get boostrsp-->
     <link href="https://getbootstrap.com/docs/4.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
@@ -37,11 +38,22 @@
             text-decoration: none;
             margin: 5px 5px;
         }
-
-        .fa-twitter {
-            background: #55ACEE;
-            color: white;
+        .fa-github {
+            font-size:24px
         }
+
+        .sidebar-sticky{
+            color:whitesmoke
+        }
+
+        #githubURL{
+            color:black
+        }
+
+        #register_link{
+            color:grey
+        }
+
     </style>
     <title>
         Rango -
@@ -59,7 +71,7 @@
 <body>
 
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg bg-light" id='top_nav_bar'>
         <!--LHS logo-->
         <a class="navbar-brand p-2" href="{% url 'rango:index' %}">Rango</a>
 
@@ -95,15 +107,13 @@
                     </form>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'registration_register' %}">Register Here <span
+                    <a id='register_link' class="nav-link" href="{% url 'registration_register' %}">Register Here <span
                             class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Or Login in using</a>
-                </li>
-                <li><a href="#" method='post' class="fa fa-twitter"></a></li>
-
-                <li><a href="{% url 'social:begin' 'github' %}">Login with GitHub</a></li>
+                <li class="nav-item"><a id='githubURL' href="{% url 'social:begin' 'github' %}">
+                    <i class="fa fa-github" style="font-size:24px" href="{% url 'social:begin' 'github' %}"></i>
+                    Login with GitHub
+                </a></li>
                 {% endif %}
             </ul>
             <!-- nav bar 2nd line -->

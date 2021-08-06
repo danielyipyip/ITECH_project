@@ -9,6 +9,15 @@ Unknown Category
 {% endif %}
 {% endblock %}
 
+{% block cssblock %}
+<style>
+    .border {
+        border-radius: 12px;
+        padding-bottom: 5px;
+    }
+</style>
+{% endblock %}
+
 
 {% block JS_block %}
 <script>
@@ -26,6 +35,7 @@ Unknown Category
             }
         })
     })
+
 </script>
 
 {% endblock %}
@@ -54,27 +64,39 @@ Unknown Category
 
 
 {% if pages %}
+
 {% for page in pages %}
+<div id='result_block'>
+    <div class='row mb-3'>
+        <!--page part-->
+        <div class='col-md-9 border'>
+            <h3><a href="{% url 'rango:show_page' category.slug page.title%}">{{ page.title }}</a></h3>
+            <a href="{% url 'rango:page-counter' page.pk %}" target="_blank" rel="noopener noreferrer">Link to the
+                website</a>
+            <p>Descriptions...</p>
+            <small class='text-right'>Views = {{page.views}} Likes = {{page.likes.count}}</small>
 
-<div class='row mb-3'>
-    <!--page part-->
+            <div>
+                {% if page.tag == "Beginner"%}
+                    <small>Tag: <span class="tag" id="beginner_tag">{{ page.tag }}</span></small>
+                {% elif page.tag == "Junior Developer" %}
+                    <small>Tag: <span class="tag" id="jd_tag">{{ page.tag }}</span></small>
+                {% elif page.tag == "Senior Developer"%}
+                    <small>Tag: <span class="tag" id="sd_tag">{{ page.tag }}</span></small>
+                {% elif page.tag == "Professional"%}
+                    <small>Tag: <span class="tag" id="pro_tag">{{ page.tag }}</span></small>
+                {% endif %}
+            </div>
+        </div>
+        <!--comment part-->
+        <div class='col-md-3 border'>
+            {{page.comment}}
+        </div>
 
-    <div class='col-md-9 border'>
-        <h3><a href="{% url 'rango:show_page' category.slug page.title%}">{{ page.title }}</a></h3>
-        <a href="{% url 'rango:page-counter' page.pk %}" target="_blank" rel="noopener noreferrer">Link to the
-            website</a>
-        <p>Descriptions...</p>
-        <small class='text-right'>Views = {{page.views}} Likes = {{page.likes.count}}</small>
     </div>
-
-    <!--comment part-->
-    <div class='col-md-3 border'>
-        Comment...
-    </div>
-
 </div>
-
 {% endfor %}
+
 {% else %}
 <strong>No pages currently in category.</strong>
 {% endif %}
