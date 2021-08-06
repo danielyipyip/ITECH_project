@@ -23,8 +23,32 @@
         float:left;
     }
 
+    .likebutton, .dislikebutton {
+        background-color: Transparent;
+        background-repeat:no-repeat;
+        border: none;
+        cursor:pointer;
+        overflow: hidden;
+        outline:none;
+    }
+
+    .fa {
+        font-size: 50px;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .likebutton:hover {
+        color: rgb(21, 230, 21);
+    }
+
+    .dislikebutton:hover {
+        color: rgb(204, 19, 19);
+    }
+
     </style>
-    <link href="{% static 'rango_css/tag.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'rango_css/tag.css' %}">
 {% endblock %}
 
 {% block body_block %}
@@ -91,13 +115,13 @@
                 <br/>
 
                 <div>
-                <form action ="{% url 'rango:like_page' page.pk %}" method="POST">
+                <form id="like_form" action="{% url 'rango:like_page' page.pk %}" method="POST">
                     {% csrf_token%}
                     {% if user.is_authenticated %}
                         {% if not liked %}
-                            <button type="submit", name="page_id", value="{{ page.id }}">Like!</button> 
+                            <button class="likebutton fa fa-thumbs-up" type="submit", name="page_id", value="{{ page.id }}"></button> 
                         {% else %}
-                            <button type="submit", name="page_id", value="{{ page.id }}">Unlike!</button> 
+                            <button class="dislikebutton fa fa-thumbs-down" type="submit", name="page_id", value="{{ page.id }}"></button> 
                         {% endif %}
                     {% else %}
                         <a href="{% url 'auth_login' %}">Login</a> to like
@@ -131,12 +155,12 @@
 
                             <div class="comment_like">
                             {% if user.is_authenticated %}
-                                <form action="{% url 'rango:like_comment' comment.pk %}" method="POST">
+                                <form id="cmlike_form" action="{% url 'rango:like_comment' comment.pk %}" method="POST">
                                     {% csrf_token %}
                                         {% if user not in comment.likes.all %}
-                                            <button type="submit", name="comment_id", value="{{ comment.id }}">Like</button>
+                                            <button class="likebutton fa fa-thumbs-up" type="submit", name="comment_id", value="{{ comment.id }}"></button>
                                         {% else %}
-                                            <button type="submit", name="comment_id", value="{{ comment.id }}">UnLike</button>
+                                            <button class="dislikebutton fa fa-thumbs-down" type="submit", name="comment_id", value="{{ comment.id }}"></button>
                                         {% endif %}
                                     - {{ comment.likes.count }} Likes
                                 </form>
