@@ -206,7 +206,7 @@ def like_count(request):
     page = Page.objects.get(title=request.GET.get('page_title', None))
     likes_count = page.likes.count()
     data = {
-        'likse': like_count
+        'likes': like_count
     }
     return JsonResponse(data)
 
@@ -219,6 +219,14 @@ def likecomment(request, pk):
     else:
         comment.likes.add(request.user)
     return HttpResponseRedirect(reverse('rango:show_page',kwargs={'category_name_slug':page.category.slug , 'page_title':page.title}))
+
+def view_count(request):
+    page = Page.objects.get(title=request.GET.get('page_title', None))
+    view_count = page.views
+    data = {
+        'views': view_count
+    }
+    return JsonResponse(data)
 
 @login_required
 def register_profile(request):

@@ -96,6 +96,17 @@
             }
         });
     })
+    $('#view_count').onclick(function () {
+        var title=request.page.title
+        $.ajax({
+            url: '/ajax/view_count/',
+            data: {'page_title': title, },
+            dataType: 'json',
+            success: function (data) {
+                $('#view_count').repalceWith(data.views)
+            }
+        });
+    })
 </script>
 
 {% endblock %}
@@ -108,7 +119,7 @@
                 <div class="left_half">
                 <div>
                     <!--<p><a href="{{ page.url }}">Link to the website</a></p>-->
-                    <p><a href="{% url 'rango:page-counter' page.pk %}" target="_blank" rel="noopener noreferrer">Link to the website</a></p>
+                    <p id='website_link'><a href="{% url 'rango:page-counter' page.pk %}" target="_blank" rel="noopener noreferrer">Link to the website</a></p>
                 </div>
 
                 <div>
@@ -160,7 +171,7 @@
                 <div id="vlb">
                     <div id="views_num">
                         <p>
-                            Views: {{ page.views }}  
+                            Views: <span id='view_count'>{{ page.views }}</span>
                         </p>
                     </div>
 
