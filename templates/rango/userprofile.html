@@ -72,7 +72,7 @@ Profile Page
                 </div>
             </div>
             <div container pt-5>
-            <p>You may update your profile details Below .</p>
+            <p>You may update your profile details below .</p>
             <form class="form-horizontal" role="form" method="post" action="." enctype="multipart/form-data">
             {% csrf_token %}
 
@@ -118,15 +118,6 @@ Profile Page
                 </div>
                 <div class="col-sm-4">
                     <p>{{ form.picture }}</p>
-                </div>
-            </div>
-
-            <div class ="row">
-                <div class="col-sm-4">
-                    <a href="{% url 'rango:index' %}" class="btn" role="button">Cancel</a>
-                </div>
-                <div class="col-sm-4">
-                    <p></p>
                 </div>
             </div>
 
