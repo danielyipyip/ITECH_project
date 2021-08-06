@@ -27,7 +27,10 @@ def index(request):
     context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
     context_dict['categories'] = category_list
     context_dict['pages'] = page_list
-    context_dict['special_pages'] = Page.objects.order_by('-views')[4]
+    try:
+        context_dict['special_pages'] = Page.objects.order_by('-views')[4]
+    except IndexError:  #add for unit test
+        context_dict['special_pages'] = Page.objects.order_by('-views').first()
 
     visitor_cookie_handler(request)
     # Obtain our Response object early so we can add cookie information.
@@ -79,23 +82,28 @@ def show_page(request, category_name_slug, page_title,):
     else:
         liked = False
     
+    if page.bookmark.filter(id=request.user.id).exists():
+        is_bookmarked = True
+    else:
+        is_bookmarked = False
+
     if request.method == 'POST':
-        form = CommentForm(request.POST or None)
-        if form.is_valid():
+        cmform = CommentForm(request.POST or None)
+        if cmform.is_valid():
             input = request.POST.get('input')
             comment = Comment.objects.create(page=page, user=request.user, input=input)
             comment.save()
             return redirect(reverse('rango:show_page',kwargs={'category_name_slug':category_name_slug, 'page_title':page.title}))
     else:
-        form = CommentForm()
+        cmform = CommentForm()
 
     context_dict['page'] = page
     context_dict['likes_count'] = likes_count
     context_dict['liked'] = liked
     context_dict['category'] = category
     context_dict['comments'] = comments
-    context_dict['form'] = form
-
+    context_dict['form'] = cmform
+    context_dict['is_bookmarked'] = is_bookmarked
     return render(request, 'rango/page.html', context=context_dict)
 
 @login_required
@@ -142,55 +150,6 @@ def add_page(request,category_name_slug):
             print(form.errors)
     context_dict = {'form': form, 'category': category}
     return render(request, 'rango/add_page.html', context=context_dict)
-
-# def register(request):
-#     registered = False
-#     if request.method == 'POST':
-#         user_form = UserForm(request.POST)
-#         profile_form = UserProfileForm(request.POST)
-
-#         if user_form.is_valid() and profile_form.is_valid():
-#             user = user_form.save() #will this leak pw??
-#             user.set_password(user.password) #hash pw
-#             user.save()
-
-#             profile = profile_form.save(commit=False) #delay save, no user yet
-#             profile.user = user
-#             if 'picture' in request.FILES:
-#                 profile.picture = request.FILES['picture'] #if uploaded pic, add
-#             profile.save()
-#             registered=True
-#         else:
-#             print(user_form.errors, profile_form.errors)
-#     else: #NOT HTTP POST-> render 2 model form instance (empty form)
-#         #so 1st start is get-> will generate empty form??
-#         user_form=UserForm()
-#         profile_form=UserProfileForm()
-
-#     return render(request, 'rango/register.html', context={'user_form': user_form, 
-#         'profile_form': profile_form, 'registered': registered})
-    
-# def user_login(request):
-#     if request.method == 'POST':
-# # use request.POST.get('<variable>') as opposed to request.POST['<variable>'], 
-# # request.POST.get('<variable>') returns None , while request.POST['<variable>'] raise a KeyError exception.
-#         username = request.POST.get('username')
-#         password = request.POST.get('password')
-# # Use Django's machinery to see if the username/password combination is valid - a User object is returned if it is.
-#         user = authenticate(username=username, password=password)
-# # If we have a User object, the details are correct, otherwise None (Python's way of representing the absence of a value)
-#         if user:
-#             if user.is_active:
-# # if account valid and active, log the user in, send user back to the homepage.
-#                 login(request, user)
-#                 return redirect(reverse('rango:index'))
-#             else:
-#                 return HttpResponse("Your Rango account is disabled.")
-#         else: # Bad login details, can't log the user in.
-#             print(f"Invalid login details: {username}, {password}")
-#             return HttpResponse("Invalid login details supplied.")
-#     else:# request not HTTP POST -> display login form (most likely be a HTTP GET.)
-#         return render(request, 'rango/login.html') #blank dictionary object
 
 @login_required
 def restricted(request):
@@ -278,8 +237,9 @@ class ProfileView(View):
             user = User.objects.get(username=username)
         except User.DoesNotExist:
             return None
-        
+
         user_profile = UserProfile.objects.get_or_create(user=user)[0]
+
         form = UserProfileForm({
                                 'first_name':user_profile.first_name,
                                 'last_name':user_profile.last_name,
@@ -303,6 +263,13 @@ class ProfileView(View):
         context_dict ['user_profile'] = user_profile
         context_dict ['selected_user']= user
         context_dict ['form'] = form
+
+        context_dict = {'message' : '',
+                        'user_profile': user_profile,
+                        'selected_user': user,
+                        'form': form,
+                        'bookmark_pages':user.bookmark.all()}
+
         return render(request, 'rango/userprofile.html', context_dict)
     
     @method_decorator(login_required)
@@ -325,11 +292,16 @@ class ProfileView(View):
 
         else:
             print(form.errors)
-        
-        return render(request, 'rango/userprofile.html', context_dict)
-
-
 def registration_completed(request):
     context_dict={ 'message' : 'Congratulations! Your account is now successfully created.' }
     response = render(request, 'rango/registration_completed.html',context=context_dict)
     return response
+
+def bookmark_page(request, id):
+    page = get_object_or_404(Page, id=id)
+    if page.bookmark.filter(id=request.user.id).exists():
+       page.bookmark.remove(request.user)
+    else:
+        page.bookmark.add(request.user)
+    return HttpResponseRedirect(reverse('rango:show_page',kwargs={'category_name_slug':page.category.slug , 'page_title':page.title}))
+

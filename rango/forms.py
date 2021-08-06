@@ -62,9 +62,11 @@ class UserProfileForm(forms.ModelForm):
         fields = ('first_name','last_name','level','website','picture')
 
 class CommentForm(forms.ModelForm):
-    input = forms.CharField(widget=forms.Textarea(attrs={
-        'rows': '3',
-    }))
+    
+    input = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': '3',}),
+    )
+
     class Meta:
         model = Comment
         fields = ('input',)
