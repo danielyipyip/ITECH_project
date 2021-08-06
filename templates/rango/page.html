@@ -49,25 +49,35 @@
                 </p>
             </div>
 
-            {% if page.image %}
-            <img src="{{MEDIA_URL}}{{page.image}}" alt="{{page.title}}" />
-            {% endif %}
-            <form action ="{% url 'rango:like_page' page.pk %}" method="POST">
-                {% csrf_token%}
-                {% if user.is_authenticated %}
-                    {% if not liked %}
-                        <button type="submit", name="page_id", value="{{ page.id }}">Like!</button> 
-                    {% else %}
-                        <button type="submit", name="page_id", value="{{ page.id }}">Unlike!</button> 
-                    {% endif %}
-                {% else %}
-                    <a href="{% url 'auth_login' %}">Login</a> to like
+            <div>
+                {% if page.image %}
+                <img src="{{MEDIA_URL}}{{page.image}}" alt="{{page.title}}" />
                 {% endif %}
-                - {{ likes_count }} Likes
-            </form>
-
+                <form action ="{% url 'rango:like_page' page.pk %}" method="POST">
+                    {% csrf_token%}
+                    {% if user.is_authenticated %}
+                        {% if not liked %}
+                            <button type="submit", name="page_id", value="{{ page.id }}">Like!</button> 
+                        {% else %}
+                            <button type="submit", name="page_id", value="{{ page.id }}">Unlike!</button> 
+                        {% endif %}
+                    {% else %}
+                        <a href="{% url 'auth_login' %}">Login</a> to like
+                    {% endif %}
+                    - {{ likes_count }} Likes
+                </form>
             </div>
 
+            <div>
+                {% if is_bookmarked %}
+                <a href="{% url 'rango:bookmark_page' id=page.id %}">Remove from Bookmark</a>
+                {% else %}
+                <a href="{% url 'rango:bookmark_page' id=page.id %}">Add to Bookmark</a>
+                {% endif %}
+            </div>
+
+
+            </div>
             <!-- Right content -->
             <div class="container__half">
                 <h2>Comments:</h2>

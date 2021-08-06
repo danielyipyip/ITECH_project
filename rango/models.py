@@ -35,6 +35,7 @@ class Page(models.Model):
     tag = models.CharField(max_length=TAG_MAX_LENGTH, blank=True)
     description = models.TextField(max_length=Description_MAX_LENGTH)
     image = models.ImageField(upload_to='page_images', blank=True)
+    bookmark = models.ManyToManyField(User, related_name="bookmark", blank=True)
 
     def update_count(self):
         self.views = self.views + 1
@@ -59,8 +60,6 @@ class UserProfile(models.Model):
     )
     level = models.CharField(choices = LEVEL_CHOICES,max_length=200, blank=True)
 
-
-
     def __str__(self):
         return self.user.username
 
@@ -74,6 +73,10 @@ class Comment(models.Model):
     def __str__(self):
         return '%s - %s - %s' %(self.user.username, self.page.title, self.time)
 
-class BookmarkList(models.Model):
-    userprofile = models.OneToOneField(User,on_delete=models.CASCADE)
-    page = models.ForeignKey(Page, on_delete=models.CASCADE)
+#class Bookmark(models.Model):
+#    page = models.ForeignKey(Page, on_delete=CASCADE, related_name="bookmark_page")
+#    user = models.ForeignKey(User, on_delete=CASCADE, related_name="bookmark_user")
+#    time = models.DateTimeField(auto_now_add=True)
+#
+#    def __str__(self):
+#       return self.page.title

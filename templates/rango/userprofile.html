@@ -32,4 +32,21 @@ Profile for {{ selected_user.username }}
         </div>
     </div>
 </div>
+
+<hr/>
+<br/>
+
+<div>
+    <h2>Your Bookmark List:</h2>
+    {% for page in bookmark_pages %}
+        <a href="{% url 'rango:show_page' page.category.slug page.title%}">
+            {{page.title}}
+        </a>
+        <br/>
+    {% empty %}
+        <p>No page in bookmark list.</p>
+    {% endfor %}
+</div>
+
+
 {% endblock %}

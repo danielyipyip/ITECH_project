@@ -20,4 +20,5 @@ urlpatterns = [
     path('optional_registration/', views.register_profile, name='register_profile'),
     path('counter/<int:pk>/', views.LinkRedirectView.as_view(), name='page-counter'),
     path('profile/<username>/', views.ProfileView.as_view(), name='profile'),
+    path('bookmark_page/<id>/', views.bookmark_page, name='bookmark_page')
 ]
