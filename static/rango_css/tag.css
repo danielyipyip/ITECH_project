@@ -1,0 +1,26 @@
+.tag {
+    background-color:#000;
+    color:#fff;
+    display: inline-block;
+    padding-left:8px;
+    padding-right:8px;
+    text-align: left;
+    border-radius: 25px;
+}
+
+#beginner_tag {
+    background-color:rgb(70, 224, 9);
+    color:rgb(255, 255, 255);
+}
+
+#jd_tag {
+    background-color:rgb(21, 92, 33);
+}
+
+#sd_tag {
+    background-color:rgb(42, 53, 209);
+}
+
+#pro_tag {
+    background-color:rgb(167, 18, 159);
+}
