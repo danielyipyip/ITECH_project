@@ -11,6 +11,7 @@ from django.conf import settings
 from django.urls import reverse, resolve
 from django.contrib.auth.models import User
 from django.forms import fields as django_fields
+from rango.models import UserProfile
 
 FAILURE_HEADER = f"{os.linesep}{os.linesep}{os.linesep}================{os.linesep}TwD TEST FAILURE =({os.linesep}================{os.linesep}"
 FAILURE_FOOTER = f"{os.linesep}"
@@ -76,4 +77,33 @@ class social_media_register(TestCase):
     def test_installed_apps(self):
         self.assertTrue('social_django' in settings.INSTALLED_APPS)
         self.assertTrue('social_core.backends.github.GithubOAuth2' in settings.AUTHENTICATION_BACKENDS)
-        
+
+class UserRegistrationTest(TestCase):
+
+    def test_ensure_userprofile_field_can_be_null(self):
+        #create_user_without_website:
+            user = User.objects.create(username = "testing", 
+                                            password = "12345",
+                                            email = "testing")               
+            
+            userprofile = UserProfile.objects.create(user=user,
+                                                        first_name = "testing",
+                                                        last_name = "testing")
+                        
+            self.assertTrue(not userprofile.website)
+
+class ProfilePage(TestCase):
+
+    def test_email_field_not_showing_to_other_user(self):
+
+                    currentuser = User.objects.create(username = "testing", 
+                                            password = "12345",
+                                            email = "testing")  
+                    otheruser = User.objects.create(username = "testing", 
+                                            password = "12345",
+                                            email = "testing")  
+                    userprofile1 = UserProfile.objects.create(user=currentuser)
+                    userprofile2 = UserProfile.objects.create(user=otheruser)
+                    response = self.client.get(reverse('rango:profile',currentuser.username))
+                    response = self.client.get(reverse('rango:profile',otheruser.username))
+
