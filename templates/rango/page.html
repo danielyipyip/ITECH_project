@@ -65,7 +65,7 @@
 
                 <div>
                     {% if page.image %}
-                    <img src="{{MEDIA_URL}}{{page.image}}" alt="{{page.title}}" />
+                        <img src="{{MEDIA_URL}}{{page.image}}" alt="{{page.title}}" />
                     {% endif %}
                 </div>
 
@@ -97,10 +97,12 @@
                 </div>
 
                 <div>
-                    {% if is_bookmarked %}
-                    <a href="{% url 'rango:bookmark_page' id=page.id %}">Remove from Bookmark</a>
-                    {% else %}
-                    <a href="{% url 'rango:bookmark_page' id=page.id %}">Add to Bookmark</a>
+                    {% if user.is_authenticated %}
+                        {% if is_bookmarked %}
+                        <a href="{% url 'rango:bookmark_page' id=page.id %}">Remove from Bookmark</a>
+                        {% else %}
+                        <a href="{% url 'rango:bookmark_page' id=page.id %}">Add to Bookmark</a>
+                        {% endif %}
                     {% endif %}
                 </div>
 
