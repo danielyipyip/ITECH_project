@@ -12,15 +12,15 @@ Unknown Category
 
 {% block JS_block %}
 <script>
-    $(document).ready(function(){
-        $('#sort_views').click(function(){
-            if ($('#sort_views').attr("class")=="btn btn-light"){
+    $(document).ready(function () {
+        $('#sort_views').click(function () {
+            if ($('#sort_views').attr("class") == "btn btn-light") {
                 $('#sort_views').attr("class", "btn btn-primary")
                 $('#sort_like').attr("class", "btn btn-light")
             }
         })
-        $('#sort_like').click(function(){
-            if ($('#sort_like').attr("class")=="btn btn-light"){
+        $('#sort_like').click(function () {
+            if ($('#sort_like').attr("class") == "btn btn-light") {
                 $('#sort_views').attr("class", "btn btn-light")
                 $('#sort_like').attr("class", "btn btn-primary")
             }
@@ -42,7 +42,6 @@ Unknown Category
                     sort by:
                     <button type="button" class="btn btn-primary" id='sort_views'>views</button>
                     /
-
                     <button type="button" class="btn btn-light" id='sort_like'>likes</button>
                 </div>
             </div>
@@ -62,11 +61,12 @@ Unknown Category
 
     <div class='col-md-9 border'>
         <h3><a href="{% url 'rango:show_page' category.slug page.title%}">{{ page.title }}</a></h3>
-        <a href="{% url 'rango:page-counter' page.pk %}" target="_blank" rel="noopener noreferrer">Link to the website</a>
+        <a href="{% url 'rango:page-counter' page.pk %}" target="_blank" rel="noopener noreferrer">Link to the
+            website</a>
         <p>Descriptions...</p>
         <small class='text-right'>Views = {{page.views}} Likes = {{page.likes.count}}</small>
     </div>
-    
+
     <!--comment part-->
     <div class='col-md-3 border'>
         Comment...
@@ -90,4 +90,3 @@ Unknown Category
 The specified category does not exist.
 {% endif %}
 {% endblock %}
-
