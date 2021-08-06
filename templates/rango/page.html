@@ -6,110 +6,12 @@
 {% endblock %}
 
 {% block cssblock %}
-<style>
-    img {
-        max-width: 100%;
-        height: auto;
-        width: auto\9; 
-    }   
-    #container {
-        display: flex;
-    }
-
-    .left_half {
-        border-style: solid;
-        border-color: rgb(12, 206, 255);
-        border-width: 1px;
-        border-radius: 24px;
-        background-color: rgb(232, 247, 252);
-        padding: 24px;
-        margin: 24px;
-        margin-left: 0px;
-    }
-
-    .container__half {
-        flex: 1;
-        width: 100%
-    }
-
-    .commentpart {
-        float: left;
-        width: 100%;
-        padding: 5px;
-        background-color: rgb(245, 245, 252);
-        border-color:cornsilk;
-        border-radius: 10px;
-    }
-
-    .comment {
-        float: left;
-        width: 80%;
-        margin-right: 30px;
-    }
-
-    .comment_like {
-        float: left;
-    }
-
-    .likebutton, .dislikebutton {
-        background-color: Transparent;
-        background-repeat:no-repeat;
-        border: none;
-        cursor:pointer;
-        overflow: hidden;
-        outline:none;
-    }
-
-    .fa {
-        font-size: 50px;
-        cursor: pointer;
-        user-select: none;
-    }
-
-    .likebutton:hover {
-        color: rgb(21, 230, 21);
-    }
-
-    .dislikebutton:hover {
-        color: rgb(204, 19, 19);
-    }
-
-    #views_num ,#page_like {
-        float: left;
-        margin-right: 20px;
-    }
-
-    .addcm {
-        clear: both;
-    }
-</style>
+<link href="{% static 'rango_css/page.css' %}" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
 
-<script>
-    $('#page_id').onclick(function () {
-        var title=request.page.title
-        $.ajax({
-            url: '/ajax/like_count/',
-            data: {'page_title': title, },
-            dataType: 'json',
-            success: function (data) {
-                $('#like_count').repalceWith(data.likes)
-            }
-        });
-    })
-    $('#view_count').onclick(function () {
-        var title=request.page.title
-        $.ajax({
-            url: '/ajax/view_count/',
-            data: {'page_title': title, },
-            dataType: 'json',
-            success: function (data) {
-                $('#view_count').repalceWith(data.views)
-            }
-        });
-    })
-</script>
-
+{% block JS_block %}
+<script src="rango_js/page.js"></script>
 {% endblock %}
 
 {% block body_block %}
@@ -228,9 +130,10 @@
                                                 <button class="dislikebutton fa fa-thumbs-down" type="submit", name="comment_id", value="{{ comment.id }}"></button>
                                             {% endif %}
                                     </form>
+                                    {% endif %}
                                 </div>
                             </div>
-                            {% endif %}
+                            
                         {% endfor %}
 
                     {% endif %}

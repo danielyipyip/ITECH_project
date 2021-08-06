@@ -11,15 +11,17 @@
     <meta name="author" content="group caffine">
     <link rel="icon" href="{% static 'images/rango.jpg' %}">
     <link href="{% static 'rango_css/tag.css' %}" rel="stylesheet">
+    <!-- CSS -->
+    <link href="{% static 'rango_css/base_style.css' %}" rel="stylesheet">
+
+
     <!--get boostrsp-->
     <link href="https://getbootstrap.com/docs/4.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!--
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     -->
-    <!-- CSS 
-    <link href="{% static 'rango_css/base_style.css' %}" rel="stylesheet">
--->
+
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- JavaScript -->
@@ -47,7 +49,7 @@
 
     <nav class="navbar navbar-expand-lg bg-light" id='top_nav_bar'>
         <!--LHS logo-->
-        <a class="navbar-brand p-2" href="{% url 'rango:index' %}">Rango</a>
+        <a class="navbar-brand p-2" href="{% url 'rango:index' %}">Extended Rango</a>
 
         <!--for collapse when screen too small-->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
