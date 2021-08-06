@@ -20,23 +20,8 @@ Unknown Category
 
 
 {% block JS_block %}
-<script>
-    $(document).ready(function () {
-        $('#sort_views').click(function () {
-            if ($('#sort_views').attr("class") == "btn btn-light") {
-                $('#sort_views').attr("class", "btn btn-primary")
-                $('#sort_like').attr("class", "btn btn-light")
-            }
-        })
-        $('#sort_like').click(function () {
-            if ($('#sort_like').attr("class") == "btn btn-light") {
-                $('#sort_views').attr("class", "btn btn-light")
-                $('#sort_like').attr("class", "btn btn-primary")
-            }
-        })
-    })
 
-</script>
+<script src="rango_js/categoryscripts.js"></script>
 
 {% endblock %}
 
@@ -78,13 +63,13 @@ Unknown Category
 
             <div>
                 {% if page.tag == "Beginner"%}
-                    <small>Tag: <span class="tag" id="beginner_tag">{{ page.tag }}</span></small>
+                <small>Tag: <span class="tag" id="beginner_tag">{{ page.tag }}</span></small>
                 {% elif page.tag == "Junior Developer" %}
-                    <small>Tag: <span class="tag" id="jd_tag">{{ page.tag }}</span></small>
+                <small>Tag: <span class="tag" id="jd_tag">{{ page.tag }}</span></small>
                 {% elif page.tag == "Senior Developer"%}
-                    <small>Tag: <span class="tag" id="sd_tag">{{ page.tag }}</span></small>
+                <small>Tag: <span class="tag" id="sd_tag">{{ page.tag }}</span></small>
                 {% elif page.tag == "Professional"%}
-                    <small>Tag: <span class="tag" id="pro_tag">{{ page.tag }}</span></small>
+                <small>Tag: <span class="tag" id="pro_tag">{{ page.tag }}</span></small>
                 {% endif %}
             </div>
         </div>
