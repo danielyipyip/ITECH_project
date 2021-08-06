@@ -142,6 +142,8 @@ def add_page(request,category_name_slug):
                 page = form.save(commit=False)
                 page.category = category
                 page.views = 0
+                user_profile = UserProfile.objects.get_or_create(user=request.user)[0]
+                page.tag = user_profile.level
                 if 'image' in request.FILES:
                     page.image = request.FILES['image']
                 page.save()

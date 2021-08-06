@@ -65,6 +65,7 @@ class CommentForm(forms.ModelForm):
     
     input = forms.CharField(
         widget=forms.Textarea(attrs={'rows': '3',}),
+        label=False
     )
 
     class Meta:
