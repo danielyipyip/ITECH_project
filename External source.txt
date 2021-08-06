@@ -1,0 +1,15 @@
+External source: 
+Django app: 
+'social_django',
+
+Boostrap: 
+https://getbootstrap.com/docs/4.2/dist/css/bootstrap.min.css,  integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"
+
+jQuery library: 
+https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js
+
+Javascript
+https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js
+
+library with social media logo
+https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css
