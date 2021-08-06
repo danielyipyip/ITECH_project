@@ -1,0 +1,255 @@
+{% extends 'rango/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+{{ page.title }}
+{% endblock %}
+
+{% block cssblock %}
+<style>
+    img {
+        max-width: 100%;
+        height: auto;
+        width: auto\9; 
+    }   
+    #container {
+        display: flex;
+    }
+
+    .left_half {
+        border-style: solid;
+        border-color: rgb(12, 206, 255);
+        border-width: 1px;
+        border-radius: 24px;
+        background-color: rgb(232, 247, 252);
+        padding: 24px;
+        margin: 24px;
+        margin-left: 0px;
+    }
+
+    .container__half {
+        flex: 1;
+        width: 100%
+    }
+
+    .commentpart {
+        float: left;
+        width: 100%;
+        padding: 5px;
+        background-color: rgb(245, 245, 252);
+        border-color:cornsilk;
+        border-radius: 10px;
+    }
+
+    .comment {
+        float: left;
+        width: 80%;
+        margin-right: 30px;
+    }
+
+    .comment_like {
+        float: left;
+    }
+
+    .likebutton, .dislikebutton {
+        background-color: Transparent;
+        background-repeat:no-repeat;
+        border: none;
+        cursor:pointer;
+        overflow: hidden;
+        outline:none;
+    }
+
+    .fa {
+        font-size: 50px;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .likebutton:hover {
+        color: rgb(21, 230, 21);
+    }
+
+    .dislikebutton:hover {
+        color: rgb(204, 19, 19);
+    }
+
+    #views_num ,#page_like {
+        float: left;
+        margin-right: 20px;
+    }
+
+    .addcm {
+        clear: both;
+    }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<script>
+    $('#page_id').onclick(function () {
+        var title=request.page.title
+        $.ajax({
+            url: '/ajax/like_count/',
+            data: {'page_title': title, },
+            dataType: 'json',
+            success: function (data) {
+                $('#like_count').repalceWith(data.likes)
+            }
+        });
+    })
+    $('#view_count').onclick(function () {
+        var title=request.page.title
+        $.ajax({
+            url: '/ajax/view_count/',
+            data: {'page_title': title, },
+            dataType: 'json',
+            success: function (data) {
+                $('#view_count').repalceWith(data.views)
+            }
+        });
+    })
+</script>
+
+{% endblock %}
+
+{% block body_block %}
+    {% if page %}
+        <h1>{{ page.title }}</h1>
+        <div id="container">
+            <div class="container__half">
+                <div class="left_half">
+                <div>
+                    <!--<p><a href="{{ page.url }}">Link to the website</a></p>-->
+                    <p id='website_link'><a href="{% url 'rango:page-counter' page.pk %}" target="_blank" rel="noopener noreferrer">Link to the website</a></p>
+                </div>
+
+                <div>
+                    <p id="test">
+                    {% if page.description != "none" %}
+                        <strong>Description:</strong> {{ page.description }}
+                    {% else %}
+                        No description.
+                    {% endif %}
+                    </p>
+                </div>
+
+                <div>
+                    <p> 
+                        <strong>Category:</strong> <a href ="{% url 'rango:show_category' page.category.slug%}">{{ page.category }} </a>
+                    </p>
+                </div>
+
+                <div>
+                    {% if page.uploader %}
+                    <p>
+                        <strong>Uploaded by:</strong> <a href ="{% url 'rango:profile' page.uploader%}">{{ page.uploader }}</a>
+                    </p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    {% if page.tag == "Beginner"%}
+                        <strong>Tag:</strong> <span class="tag" id="beginner_tag">{{ page.tag }}</span>
+                    {% elif page.tag == "Junior Developer" %}
+                        <strong>Tag:</strong> <span class="tag" id="jd_tag">{{ page.tag }}</span>
+                    {% elif page.tag == "Senior Developer"%}
+                        <strong>Tag:</strong> <span class="tag" id="sd_tag">{{ page.tag }}</span>
+                    {% elif page.tag == "Professional"%}
+                        <strong>Tag:</strong> <span class="tag" id="pro_tag">{{ page.tag }}</span>
+                    {% endif %}
+                </div>
+
+                <br/>
+
+                <div>
+                    {% if page.image %}
+                    <img src="{{MEDIA_URL}}{{page.image}}" alt="{{page.title}}" />
+                    {% endif %}
+                </div>
+
+                <br/>
+                </div>
+                <div id="vlb">
+                    <div id="views_num">
+                        <p>
+                            Views: <span id='view_count'>{{ page.views }}</span>
+                        </p>
+                    </div>
+
+                    <div id="page_like">
+                        <span>Likes: {{ likes_count }}
+                        <form id="like_form" action="{% url 'rango:like_page' page.pk %}" method="POST">
+                            {% csrf_token%}
+                            {% if user.is_authenticated %}
+                                {% if not liked %}
+                                    <button class="likebutton fa fa-thumbs-up" type="submit", name="page_id", value="{{ page.id }}"></button> 
+                                {% else %}
+                                    <button class="dislikebutton fa fa-thumbs-down" type="submit", name="page_id", value="{{ page.id }}"></button> 
+                                {% endif %}
+                            {% else %}
+                                <a href="{% url 'auth_login' %}">Login</a> to like
+                            {% endif %}
+                        </form>
+                        </span>
+                    </div>
+                </div>
+
+                <div>
+                    {% if is_bookmarked %}
+                    <a href="{% url 'rango:bookmark_page' id=page.id %}">Remove from Bookmark</a>
+                    {% else %}
+                    <a href="{% url 'rango:bookmark_page' id=page.id %}">Add to Bookmark</a>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <!-- Right content -->
+            <div class="container__half">
+                <h2>Comments:</h2>
+                    {% if not page.comment.all %}
+                        No Comments
+                    {% else %}
+                        
+                        {% for comment in comments %}
+                            <div class="commentpart border">
+                                <div class="comment">
+                                <Strong><a href ="{% url 'rango:profile' comment.user.username%}">{{ comment.user.username }}</a> - {{ comment.time }} <br/></Strong>
+                                {{ comment.input }} 
+                                </div>
+                                <div class="comment_like">
+                                    {% if user.is_authenticated %}
+                                    Likes: {{ comment.likes.count }}
+                                    <form id="cmlike_form" action="{% url 'rango:like_comment' comment.pk %}" method="POST">
+                                            {% csrf_token %}
+                                            {% if user not in comment.likes.all %}
+                                                <button class="likebutton fa fa-thumbs-up" type="submit", name="comment_id", value="{{ comment.id }}"></button>
+                                            {% else %}
+                                                <button class="dislikebutton fa fa-thumbs-down" type="submit", name="comment_id", value="{{ comment.id }}"></button>
+                                            {% endif %}
+                                    </form>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+
+                    {% endif %}
+                    <div class="addcm">
+                        <br/> <hr/>
+                        {% if user.is_authenticated %}
+                        Add a Comment: 
+                            <form method='POST'>
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <input type="submit" value="submit">
+                            </form>
+                        {% else %}
+                            <a href="{% url 'auth_login' %}">Login</a> to leave a comment.
+                        {% endif %}
+                    </div>
+            </div>
+</div>
+{% else %}
+The specified page does not exist.
+{% endif %}
+{% endblock %}
