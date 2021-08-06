@@ -85,7 +85,7 @@
                         No Comments
                     {% else %}
                         {% for comment in comments %}
-                            <Strong>{{ comment.user.username }} - {{ comment.time }} <br/></Strong>
+                            <Strong><a href ="{% url 'rango:profile' comment.user.username%}">{{ comment.user.username }}</a> - {{ comment.time }} <br/></Strong>
                             {{ comment.input }} 
 
                             {% if user.is_authenticated %}

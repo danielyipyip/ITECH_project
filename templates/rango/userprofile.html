@@ -12,6 +12,14 @@ Profile Page
     #infoheader {
         font-weight: bold;
     }
+
+    #profileimg{
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 10px;
+        width: 250px;
+        height: 250px;
+    }
 </style>
 
 <div class="container pt-5">
@@ -24,17 +32,21 @@ Profile Page
 
 <div class="container pt-5">
 
-    <h2>Your Profile Details</h2><br>
+    <h2>Profile Details</h2><br>
     <p style="color: rgba(167, 17, 17, 0.87); font-size:200%">{{ message }} </style> </p>
     <div class="container pt-5"></div>
     <div class="row">
         <div class="col-md-4">
             <div class="text-center">
-                <img src="{{ MEDIA_URL }}{{ user_profile.picture }}" class="avatar img-circle" alt="Profile Picture" width=200 height=200>
+                {% if user_profile.picture %}
+                    <img id = profileimg src="{{ MEDIA_URL }}{{ user_profile.picture }}" alt="Profile Picture" />
+                {% else %}
+                    <img id = profileimg src="{% static 'images/rango.jpg' %}" alt="Default Profile" alt="Profile Picture" />
+                {% endif %}
             </div>
         </div>
 
-
+        {% if selected_user == user %}
         <div class="col-md-8">
             <div class ="row">
                 <div class="col-sm-4">
@@ -61,7 +73,6 @@ Profile Page
                 </div>
             </div>
             <div container pt-5>
-            {% if selected_user == user %}
             <p>You may update your profile details Below .</p>
             <form class="form-horizontal" role="form" method="post" action="." enctype="multipart/form-data">
             {% csrf_token %}
@@ -111,56 +122,91 @@ Profile Page
                 </div>
             </div>
 
-                <div class="row">  
-                    <div class="pt-5 col-sm-12 col-md-12 col-xs-12">  
-                        <div class="float-right">
-                            <button class="btn btn-primary" type="submit">Update Profile</button>
-                        </div>  
-                    </div>  
-                </div>
-                
-                
-  
-            {% else %}
             <div class ="row">
                 <div class="col-sm-4">
-                    <p id = "infoheader">Level of expertise:</p>
+                    <a href="{% url 'rango:index' %}" class="btn" role="button">Cancel</a>
                 </div>
                 <div class="col-sm-4">
-                    <p>{{ user_profile.level }}</p>
+                    <p></p>
                 </div>
             </div>
 
-            <div class ="row">
-                <div class="col-sm-4">
-                    <p id = "infoheader">Your website:</p>
-                </div>
-                <div class="col-sm-4">
-                    <p>{{ user_profile.website }}</p>
-                </div>
+            <div class="row">  
+                <div class="pt-5 col-sm-12 col-md-12 col-xs-12">  
+                    <div class="float-right">
+                        <a href="{% url 'auth_password_change' %}" class="btn btn-info" role="button">Change Password</a>
+                        <button class="btn btn-primary" type="submit">Update Profile</button>
+                        </form>
+                        <a href="{% url 'rango:index' %}" class="btn btn-danger" role="button">Cancel</a>
+                    </div>  
+                </div>  
             </div>
+
+            {% else %}
+
+        <div class="col-md-8">
+
+                
+                <div class ="row">
+                    <div class="col-sm-4">
+                        <p id = "infoheader">Name</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <p>{{ user_profile.first_name }}    {{ user_profile.last_name }}</p>
+                    </div>
+                </div>
+
+                <div class ="row">
+                    <div class="col-sm-4">
+                        <p id = "infoheader">Email</p>
+                </div>
+                    <div class="col-sm-4">
+                        <p>{{ user.email }}</p>
+                    </div>
+                </div>
+
+
+                <div class ="row">
+                    <div class="col-sm-4">
+                        <p id = "infoheader">Level of expertise:</p>
+                    </div>
+                    <div class="col-sm-4">
+                    <p>{{ user_profile.level }}</p>
+                    </div>
+                </div>
+
+                <div class ="row">
+                    <div class="col-sm-4">
+                        <p id = "infoheader">Website:</p>
+                    </div>
+                     <div class="col-sm-4">
+                        <p>{{ user_profile.website }}</p>
+                    </div>
+                </div>
 
             {% endif %}
         </div>
     </div>  
 </div>
 
+{% if selected_user == user %}  
 
-<hr/>
-<br/>
+    <hr/>
+    <br/>
 
-<div style="height:300px">
-    <div class = "h-75">
-    <h2>Your Bookmark List:</h2>
-    {% for page in bookmark_pages %}
-        <a href="{% url 'rango:show_page' page.category.slug page.title%}">
-            <h4>{{page.title}}</h4>
-        </a>
+    <div style="height:300px">
+        <div class = "h-75">
+        <h2>Your Bookmark List:</h2>
+        {% for page in bookmark_pages %}
+            <a href="{% url 'rango:show_page' page.category.slug page.title%}">
+                <h4>{{page.title}}</h4>
+            </a>
         <br/>
-    {% empty %}
-        <p>No page in bookmark list.</p>
-    {% endfor %}
-</div>
+        {% empty %}
+            <p>No page in bookmark list.</p>
+        {% endfor %}
+    </div>
+{% endif %}
 </div>
 
 
