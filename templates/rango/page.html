@@ -8,32 +8,10 @@
 {% block cssblock %}
 <link href="{% static 'rango_css/page.css' %}" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
 
-<script>
-    $('#page_id').onclick(function () {
-        var title=request.page.title
-        $.ajax({
-            url: '/ajax/like_count/',
-            data: {'page_title': title, },
-            dataType: 'json',
-            success: function (data) {
-                $('#like_count').repalceWith(data.likes)
-            }
-        });
-    })
-    $('#view_count').onclick(function () {
-        var title=request.page.title
-        $.ajax({
-            url: '/ajax/view_count/',
-            data: {'page_title': title, },
-            dataType: 'json',
-            success: function (data) {
-                $('#view_count').repalceWith(data.views)
-            }
-        });
-    })
-</script>
-
+{% block JS_block %}
+<script src="{% static 'rango_js/page.js' %}"></script>
 {% endblock %}
 
 {% block body_block %}
@@ -87,7 +65,7 @@
 
                 <div>
                     {% if page.image %}
-                    <img src="{{MEDIA_URL}}{{page.image}}" alt="{{page.title}}" />
+                        <img src="{{MEDIA_URL}}{{page.image}}" alt="{{page.title}}" />
                     {% endif %}
                 </div>
 
@@ -119,10 +97,12 @@
                 </div>
 
                 <div>
-                    {% if is_bookmarked %}
-                    <a href="{% url 'rango:bookmark_page' id=page.id %}">Remove from Bookmark</a>
-                    {% else %}
-                    <a href="{% url 'rango:bookmark_page' id=page.id %}">Add to Bookmark</a>
+                    {% if user.is_authenticated %}
+                        {% if is_bookmarked %}
+                        <a href="{% url 'rango:bookmark_page' id=page.id %}">Remove from Bookmark</a>
+                        {% else %}
+                        <a href="{% url 'rango:bookmark_page' id=page.id %}">Add to Bookmark</a>
+                        {% endif %}
                     {% endif %}
                 </div>
 
