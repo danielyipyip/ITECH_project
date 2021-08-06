@@ -1,12 +1,9 @@
 from django.shortcuts import render, get_object_or_404
-# from django.http import HttpResponse
 from rango.models import Category, Comment
 from rango.models import Page
 from rango.forms import CategoryForm, CommentForm, PageForm
-# from rango.forms import UserForm, UserProfileForm
 from django.shortcuts import redirect
 from django.urls import reverse
-# from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.http import HttpResponseRedirect
@@ -163,10 +160,6 @@ def add_page(request,category_name_slug):
 def restricted(request):
     return render(request, 'rango/restricted.html')
 
-# @login_required #only loged in can log out
-# def user_logout(request):
-#     logout(request)
-#     return redirect(reverse('rango:index')) #return to home page
 
 #helper method: 
 def get_server_side_cookie(request, cookie, default_val=None):

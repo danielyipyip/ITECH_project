@@ -77,11 +77,6 @@ class Comment(models.Model):
     def __str__(self):
         return '%s - %s - %s' %(self.user.username, self.page.title, self.time)
 
-#class BookmarkList(models.Model):
-    #userprofile = models.OneToOneField(User,on_delete=models.CASCADE)
-    #page = models.ForeignKey(Page, on_delete=models.CASCADE)
-
-
 class Bookmark(models.Model):
     page = models.ForeignKey(Page, on_delete=CASCADE, related_name="bookmark_page")
     user = models.ForeignKey(User, on_delete=CASCADE, related_name="bookmark_user")

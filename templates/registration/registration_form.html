@@ -1,27 +1,18 @@
 {% extends 'rango/base.html' %}
-
+{% load staticfiles %}
 
 
 {% block title_block %}
 Create your Account
 {% endblock %}
 
+{% block JS_block %}
+<script src="{​​​% static 'rango_js/passwordvalidator.js' %}"></script>
+{% endblock %}
+
+
 {% block body_block %}
-<script type="text/javascript">  
-    var passwordvalidate = function() {
-      if (document.getElementById('id_password1').value == document.getElementById('id_password2').value) {
-             document.getElementById('validationmessage').style.color = 'green';
-             document.getElementById('validationmessage').innerHTML = 'Password Matched';
-     } else {
-             document.getElementById('validationmessage').style.color = 'red';
-             document.getElementById('validationmessage').innerHTML = 'Password not match';
-             }
-     }
 
-     
- </script>
-
- 
 
 <style>
     #questionheader {
