@@ -13,13 +13,19 @@ Profile Page
         font-weight: bold;
     }
 
-    #profileimg{
+    #profileimg {
         border: 1px solid #ddd;
         border-radius: 4px;
         padding: 10px;
         width: 250px;
         height: 250px;
     }
+
+    #message {
+        color: rgba(167, 17, 17, 0.87); 
+        font-size:200%;
+    }
+    
 </style>
 
 <div class="container pt-5">
@@ -33,7 +39,7 @@ Profile Page
 <div class="container pt-5">
 
     <h2>Profile Details</h2><br>
-    <p style="color: rgba(167, 17, 17, 0.87); font-size:200%">{{ message }} </style> </p>
+    <p id="message" >{{ message }} </style> </p>
     <div class="row">
         <div class="col-md-4">
             <div class="text-center">
