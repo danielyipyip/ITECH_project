@@ -18,6 +18,7 @@ from django.contrib.auth.models import User
 from rango.models import UserProfile
 from django.utils.decorators import method_decorator
 from django.views import View
+from django.http import JsonResponse
 
 
 def index(request):
@@ -63,9 +64,8 @@ def show_category(request, category_name_slug, sort_method='views'):
     except Category.DoesNotExist:
         context_dict['category'] = None
         context_dict['pages'] = None
-
-
     return render(request, 'rango/category.html', context=context_dict)
+
 
 def show_page(request, category_name_slug, page_title,):
     context_dict = {}
@@ -144,6 +144,7 @@ def add_page(request,category_name_slug):
                 page.views = 0
                 user_profile = UserProfile.objects.get_or_create(user=request.user)[0]
                 page.tag = user_profile.level
+                page.uploader = request.user.username
                 if 'image' in request.FILES:
                     page.image = request.FILES['image']
                 page.save()
@@ -195,6 +196,14 @@ def like(request, pk):
         page.likes.add(request.user)
         liked = True
     return HttpResponseRedirect(reverse('rango:show_page',kwargs={'category_name_slug':page.category.slug , 'page_title':page.title}))
+
+def like_count(request):
+    page = Page.objects.get(title=request.GET.get('page_title', None))
+    likes_count = page.likes.count()
+    data = {
+        'likse': like_count
+    }
+    return JsonResponse(data)
 
 def likecomment(request, pk):
     comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
