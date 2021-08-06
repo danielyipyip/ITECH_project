@@ -24,4 +24,5 @@ urlpatterns = [
     path('bookmark_page/<id>/', views.bookmark_page, name='bookmark_page'), 
 
     url(r'^ajax/like_count/$', views.like_count, name='like_count'),
+    url(r'^ajax/view_count/$', views.view_count, name='view_count'),
 ]

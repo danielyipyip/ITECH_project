@@ -1,0 +1,77 @@
+img {
+    max-width: 100%;
+    height: auto;
+    width: auto\9;
+}
+
+#container {
+    display: flex;
+}
+
+.left_half {
+    border-style: solid;
+    border-color: rgb(12, 206, 255);
+    border-width: 1px;
+    border-radius: 24px;
+    background-color: rgb(232, 247, 252);
+    padding: 24px;
+    margin: 24px;
+    margin-left: 0px;
+}
+
+.container__half {
+    flex: 1;
+    width: 100%
+}
+
+.commentpart {
+    float: left;
+    width: 100%;
+    padding: 5px;
+    background-color: rgb(245, 245, 252);
+    border-color: cornsilk;
+    border-radius: 10px;
+}
+
+.comment {
+    float: left;
+    width: 80%;
+    margin-right: 30px;
+}
+
+.comment_like {
+    float: left;
+}
+
+.likebutton,
+.dislikebutton {
+    background-color: Transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+}
+
+.fa {
+    font-size: 50px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.likebutton:hover {
+    color: rgb(21, 230, 21);
+}
+
+.dislikebutton:hover {
+    color: rgb(204, 19, 19);
+}
+
+#views_num,
+#page_like {
+    float: left;
+    margin-right: 20px;
+}
+
+.addcm {
+    clear: both;
