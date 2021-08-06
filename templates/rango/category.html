@@ -9,6 +9,15 @@ Unknown Category
 {% endif %}
 {% endblock %}
 
+{% block cssblock %}
+<style>
+    .border {
+        border-radius: 12px;
+        padding-bottom: 5px;
+    }
+</style>
+{% endblock %}
+
 
 {% block JS_block %}
 <script>
@@ -66,6 +75,18 @@ Unknown Category
                 website</a>
             <p>Descriptions...</p>
             <small class='text-right'>Views = {{page.views}} Likes = {{page.likes.count}}</small>
+
+            <div>
+                {% if page.tag == "Beginner"%}
+                    <small>Tag: <span class="tag" id="beginner_tag">{{ page.tag }}</span></small>
+                {% elif page.tag == "Junior Developer" %}
+                    <small>Tag: <span class="tag" id="jd_tag">{{ page.tag }}</span></small>
+                {% elif page.tag == "Senior Developer"%}
+                    <small>Tag: <span class="tag" id="sd_tag">{{ page.tag }}</span></small>
+                {% elif page.tag == "Professional"%}
+                    <small>Tag: <span class="tag" id="pro_tag">{{ page.tag }}</span></small>
+                {% endif %}
+            </div>
         </div>
         <!--comment part-->
         <div class='col-md-3 border'>
