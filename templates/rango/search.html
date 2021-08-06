@@ -11,24 +11,6 @@ Unknown Category
 
 
 {% block JS_block %}
-<script>
-    $(document).ready(function () {
-        $('#sort_views').click(function () {
-            if ($('#sort_views').attr("class") == "btn btn-light") {
-                $('#sort_views').attr("class", "btn btn-primary")
-                $('#sort_like').attr("class", "btn btn-light")
-            }
-        })
-        $('#sort_like').click(function () {
-            if ($('#sort_like').attr("class") == "btn btn-light") {
-                $('#sort_views').attr("class", "btn btn-light")
-                $('#sort_like').attr("class", "btn btn-primary")
-            }
-        })
-    })
-
-</script>
-
 {% endblock %}
 
 
@@ -36,14 +18,17 @@ Unknown Category
 {% if category %}
 <div class="jumbotron p-3">
     <div class="container">
-        <h1>{{ category.name }}</h1>
+        <h1 id='categoey_name'>{{ category.name }}</h1>
         <div class='row'>
             <div class='col-md-9'>
                 <div class="text-right">
-                    sort by:
-                    <button type="button" class="btn btn-primary" id='sort_views'>views</button>
-                    /
-                    <button type="button" class="btn btn-light" id='sort_like'>likes</button>
+                    <form id="like_form" action="{% url 'rango:index' %}" method="post">
+                        {% csrf_token%}
+                        sort by:
+                        <button type="button" class="btn btn-primary" id='sort_views'>views</button>
+                        /
+                        <button type="button" class="btn btn-light" id='sort_like'>likes</button>
+                    </form>
                 </div>
             </div>
             <div class='col-md-3'>
@@ -53,13 +38,13 @@ Unknown Category
     </div>
 </div>
 
+<div id='search_result'>
+    {% if pages %}
+    {% for page in pages %}
 
-{% if pages %}
-
-{% for page in pages %}
-<div id='result_block'>
     <div class='row mb-3'>
         <!--page part-->
+
         <div class='col-md-9 border'>
             <h3><a href="{% url 'rango:show_page' category.slug page.title%}">{{ page.title }}</a></h3>
             <a href="{% url 'rango:page-counter' page.pk %}" target="_blank" rel="noopener noreferrer">Link to the
@@ -67,19 +52,19 @@ Unknown Category
             <p>Descriptions...</p>
             <small class='text-right'>Views = {{page.views}} Likes = {{page.likes.count}}</small>
         </div>
+
         <!--comment part-->
         <div class='col-md-3 border'>
-            {{page.comment}}
+            Comment...
         </div>
 
     </div>
+
+    {% endfor %}
+    {% else %}
+    <strong>No pages currently in category.</strong>
+    {% endif %}
 </div>
-{% endfor %}
-
-{% else %}
-<strong>No pages currently in category.</strong>
-{% endif %}
-
 
 
 
